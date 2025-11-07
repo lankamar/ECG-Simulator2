@@ -124,7 +124,7 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
 
       <div className="flex-grow w-full grid grid-cols-4 gap-1">
         {leadOrder.flat().map(leadName => (
-            <div key={leadName} className="relative h-24 sm:h-32 bg-black border border-slate-800 rounded group">
+            <div key={leadName} className="relative h-32 sm:h-40 bg-black border border-slate-800 rounded group">
                 <MiniLeadChart 
                     data={data[leadName] || []}
                     timeOffset={timeOffset}
