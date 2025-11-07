@@ -48,7 +48,7 @@ const MiniLeadChart: React.FC<{ data: ECGPoint[], timeOffset: number, window: nu
                     <CartesianGrid {...gridProps} horizontalCoordinatesGenerator={(props) => Array.from({length: 11}, (_, i) => (props.offset.top || 0) + i * 10)} verticalCoordinatesGenerator={(props) => Array.from({length: 51}, (_, i) => (props.offset.left || 0) + i * 10)} />
                     <CartesianGrid {...majorGridProps} horizontalCoordinatesGenerator={(props) => Array.from({length: 3}, (_, i) => (props.offset.top || 0) + i * 50)} verticalCoordinatesGenerator={(props) => Array.from({length: 11}, (_, i) => (props.offset.left || 0) + i * 50)} />
                     <XAxis type="number" dataKey="time" domain={[timeOffset, timeOffset + window]} hide={true} allowDataOverflow={true} />
-                    <YAxis domain={[-1.5, 1.5]} hide={true} />
+                    <YAxis domain={[-2, 2]} hide={true} />
                     <Line type="monotone" dataKey="value" stroke="#00ff00" strokeWidth={1.5} dot={false} isAnimationActive={false} />
                 </LineChart>
             </ResponsiveContainer>
@@ -124,7 +124,7 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
 
       <div className="flex-grow w-full grid grid-cols-4 gap-1">
         {leadOrder.flat().map(leadName => (
-            <div key={leadName} className="relative h-48 sm:h-64 bg-black border border-slate-800 rounded group">
+            <div key={leadName} className="relative h-40 sm:h-48 bg-black border border-slate-800 rounded group">
                 <MiniLeadChart 
                     data={data[leadName] || []}
                     timeOffset={timeOffset}
