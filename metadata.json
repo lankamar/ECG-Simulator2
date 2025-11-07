@@ -1,0 +1,5 @@
+{
+  "name": "Copy of ECG Arrhythmia Simulator",
+  "description": "An interactive educational tool for learning to identify and understand various cardiac arrhythmias based on ECG waveforms. This simulator provides visual ECG tracings, theoretical explanations, and diagnostic criteria for students and healthcare professionals.",
+  "requestFramePermissions": []
+}
