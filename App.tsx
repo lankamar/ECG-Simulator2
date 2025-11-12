@@ -96,7 +96,7 @@ const App: React.FC = () => {
                 {/* Discovery Indicator - Sticky notice about more content below */}
       <div className="fixed bottom-4 right-4 bg-cyan-500/90 text-white px-4 py-3 rounded-lg shadow-lg animate-pulse cursor-pointer transition-all z-40 flex items-center gap-2 text-sm font-semibold hover:bg-cyan-400"
         onClick={() => { document.querySelector('.flex-shrink-0')?.scrollIntoView({ behavior: 'smooth' }); }}>
-        <span>DOWN</span> Aprende mas: Teoria | Criterios | Cuanto Sabes?
+        <span>\u2B07\uFE0F</span> Aprende m\u00E1s: Teor\u00EDa | Criterios | \u00BFCu\u00E1nto Sabes?
       </div>
         </div>
       </main>
