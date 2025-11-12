@@ -85,7 +85,9 @@ const Sidebar: React.FC<SidebarProps> = ({ arrhythmias, selectedArrhythmia, onSe
       <div className="text-xs text-slate-500 mt-4 text-center">
         <p>Basado en "Lectura del Electrocardiograma" de J. A. Cuence.</p>
         <p>&copy; 2024 - Educational Tool</p>
-      </div>
+      </div><p className="text-xs text-slate-400 font-semibold mt-2">Diseñador y Desarrollador: Marcelo Omar Lancry Kamycki (@lankamar)</p>
+    <p>Basado en "Lectura del Electrocardiograma" de Jorge Cuenca.</p>
+    <p>© 2025 Marcelo Omar Lancry Kamycki
     </aside>
   );
 };
