@@ -93,6 +93,11 @@ const App: React.FC = () => {
           <div className="flex-shrink-0">
              <InfoPanel arrhythmia={selectedArrhythmia} />
           </div>
+                {/* Discovery Indicator - Sticky notice about more content below */}
+      <div className="fixed bottom-4 right-4 bg-cyan-500/90 text-white px-4 py-3 rounded-lg shadow-lg animate-pulse cursor-pointer transition-all z-40 flex items-center gap-2 text-sm font-semibold hover:bg-cyan-400"
+        onClick={() => { document.querySelector('.flex-shrink-0')?.scrollIntoView({ behavior: 'smooth' }); }}>
+        <span>DOWN</span> Aprende mas: Teoria | Criterios | Cuanto Sabes?
+      </div>
         </div>
       </main>
       <ZoomModal
