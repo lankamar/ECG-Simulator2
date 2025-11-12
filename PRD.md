@@ -3,8 +3,7 @@
 **Versión:** 0.1  
 **Estado:** En Desarrollo  
 **Última actualización:** 09/11/2025  
-**Autor:** @lankamar  
-
+**Autor y Diseñador:** Marcelo Omar Lancry Kamycki
 ---
 
 ## 📋 Índice
@@ -235,6 +234,47 @@ ECG-Simulator2/
 - **Email:** [tu email]
 
 ---
+
+
+📚 Fuentes Conceptuales y Referencias
+-----------------------------
+
+### Fuente Conceptual Validadora
+
+**Libro:** [ECG: Interpretación Clínica - Jorge Cuenca](https://example.com)
+
+Este proyecto utiliza como **fuente conceptual validadora** el libro de Jorge Cuenca sobre interpretación clínica de electrocardiogramas. Los algoritmos, patrones de arritmias y criterios diagnósticos implementados en el simulador se basan en los principios y conceptos presentados en esta referencia bibliográfica.
+
+**Nota Importante:** Jorge Cuenca es el autor del libro de referencia conceptual del proyecto. El diseño, desarrollo e implementación de este simulador es responsabilidad única de Marcelo Omar Lancry Kamycki.
+
+---
+
+**Versión del documento:** 0.1
+**Última revisión:** 12/11/2025
+**Revisor:** Marcelo Omar Lancry Kamycki
+
+
+## Información de Autoría y Copyright
+
+**Desarrollador Principal:** Marcelo Omar Lancry Kamycki (@lankamar)
+- @lankamar es el pseudónimo/acrónimo utilizado en GitHub por Marcelo Omar Lancry Kamycki
+- Todas las asignaciones de tareas a "@lankamar" en este proyecto corresponden al mismo desarrollador
+
+**Copyright © 2025 Marcelo Omar Lancry Kamycki**
+
+Este proyecto de simulador de ECG es de autoría y desarrollo exclusivo de Marcelo Omar Lancry Kamycki. Todos los derechos reservados.
+
+### Protección de Autoría
+
+- **Licencia:** [Especificar licencia - MIT, GPL, CC, etc.]
+- **Fuente Conceptual:** El contenido técnico se basa en el libro de Jorge Cuenca sobre interpretación clínica de electrocardiogramas
+- **Autoría de Código:** 100% desarrollado por Marcelo Omar Lancry Kamycki
+- **GitHub Profile:** https://github.com/lankamar
+- **Commit History:** El historial de commits de GitHub registra automáticamente toda la autoría y cambios realizados
+
+---
+
+**Nota para colaboradores:** Este proyecto es de código abierto/cerrado según su licencia. Cualquier contribución requiere reconocimiento explícito.
 
 **Última revisión:** 09/11/2025  
 **Próxima revisión programada:** 23/11/2025
