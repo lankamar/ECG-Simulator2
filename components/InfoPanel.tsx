@@ -29,7 +29,7 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ arrhythmia }) => {
       <div className="flex border-b border-slate-700">
         <TabButton icon={<BookOpenIcon className="w-5 h-5 mr-2"/>} label="Teoría" isActive={activeTab === 'theory'} onClick={() => setActiveTab('theory')} />
         <TabButton icon={<BeakerIcon className="w-5 h-5 mr-2"/>} label="Criterios" isActive={activeTab === 'criteria'} onClick={() => setActiveTab('criteria')} />
-        <TabButton icon={<QuestionMarkCircleIcon className="w-5 h-5 mr-2"/>} label="¿Cuánto Sabes?" isActive={activeTab === 'quiz'} onClick={() => setActiveTab('quiz')} />
+        <TabButton icon={<QuestionMarkCircleIcon className="w-5 h-5 mr-2"/>} label="Quiz" isActive={activeTab === 'quiz'} onClick={() => setActiveTab('quiz')} />
       </div>
       <div className="p-6 overflow-y-auto flex-grow">{renderContent()}</div>
     </div>
@@ -46,12 +46,12 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ icon, label, isActive, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex items-center justify-center px-4 py-3 font-semibold text-base font-semibold transition-all duration-300 hover:scale-105 hover:drop-shadow-lg focus:outline-none flex-1 ${
-        isActive ? 'text-cyan-400 border-b-2 border-cyan-400' : 'font-semiboldtext-slate-300 hover:text-cyan-300 hover:bg-slate-700/50'transition-all duration-300 hover:scale-105 hover:drop-shadow-lg
+        className={`flex items-center justify-center px-4 py-3 font-medium text-sm transition-colors duration-200 focus:outline-none flex-1 ${
+        isActive ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-slate-400 hover:bg-slate-700'
         }`}
     >
         {icon}
-        font-semibold{label} ▼text-slate-300 hover:text-cyan-300 hover:bg-slate-700/50'transition-all duration-300 hover:scale-105 hover:drop-shadow-lg
+        {label}
     </button>
 );
 
@@ -131,8 +131,8 @@ const QuizTab: React.FC<{ questions: QuizQuestion[] }> = ({ questions }) => {
         {showFeedback && (
           <div className={`mt-4 p-4 rounded-lg text-white ${isCorrect ? 'bg-green-600/80' : 'bg-red-600/80'}`}>
             <h4 className="font-bold">{isCorrect ? '¡Correcto!' : 'Incorrecto'}</h4>
-            <p className="text-base mt-1">{question.explanation}</p>
-            <button onClick={handleNext} className="mt-4 bg-white/20 hover:bg-white/30 px-4 py-1 rounded text-base font-semibold">
+            <p className="text-sm mt-1">{question.explanation}</p>
+            <button onClick={handleNext} className="mt-4 bg-white/20 hover:bg-white/30 px-4 py-1 rounded text-sm font-semibold">
                 Siguiente Pregunta
             </button>
           </div>
