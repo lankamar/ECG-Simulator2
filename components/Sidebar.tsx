@@ -82,8 +82,8 @@ const Sidebar: React.FC<SidebarProps> = ({ arrhythmias, selectedArrhythmia, onSe
             )
         ))}
       </nav>
-    <p>Diseñador y Desarrollador: Marcelo Omar Lancry Kamycki (@lankamar).</p>
-    <p>© 2025 Marcelo Omar Lancry Kamycki.</p>
+    <p className="text-xs">Diseñador y Desarrollador: Marcelo Omar Lancry Kamycki (@lankamar).</p>
+    <p className="text-xs">© 2025 Marcelo Omar Lancry Kamycki.</p>
     </aside>
   );
 };
