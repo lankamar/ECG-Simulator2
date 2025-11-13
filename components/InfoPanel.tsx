@@ -29,7 +29,7 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ arrhythmia }) => {
       <div className="flex border-b border-slate-700">
         <TabButton icon={<BookOpenIcon className="w-5 h-5 mr-2"/>} label="Teoría" isActive={activeTab === 'theory'} onClick={() => setActiveTab('theory')} />
         <TabButton icon={<BeakerIcon className="w-5 h-5 mr-2"/>} label="Criterios" isActive={activeTab === 'criteria'} onClick={() => setActiveTab('criteria')} />
-        <TabButton icon={<QuestionMarkCircleIcon className="w-5 h-5 mr-2"/>} label="Quiz" isActive={activeTab === 'quiz'} onClick={() => setActiveTab('quiz')} />
+        <TabButton icon={<QuestionMarkCircleIcon className="w-5 h-5 mr-2"/>} label="¡Cuánto Sabes?" isActive={activeTab === 'quiz'} onClick={() => setActiveTab('quiz')} />
       </div>
       <div className="p-6 overflow-y-auto flex-grow">{renderContent()}</div>
     </div>
