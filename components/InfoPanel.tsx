@@ -46,8 +46,8 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ icon, label, isActive, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex items-center justify-center px-4 py-3 font-medium text-sm transition-colors duration-200 focus:outline-none flex-1 ${
-        isActive ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-slate-400 hover:bg-slate-700'
+        className={`flex items-center justify-center px-5 py-3 rounded-lg font-semibold text-sm transition-all duration-300 focus:outline-none flex-1 ${
+        isActive ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-slate-700/50 text-slate-300 hover:bg-slate-600 hover:text-slate-100 hover:shadow-md'
         }`}
     >
         {icon}
