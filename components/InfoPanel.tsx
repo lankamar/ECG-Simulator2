@@ -26,7 +26,7 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ arrhythmia }) => {
 
   return (
     <div className="bg-slate-800 rounded-lg shadow-lg flex flex-col h-full overflow-hidden">
-      <div className="flex border-b border-slate-700">
+      <div className="flex gap-2 justify-end">
         <TabButton icon={<BookOpenIcon className="w-5 h-5 mr-2"/>} label="Teoría" isActive={activeTab === 'theory'} onClick={() => setActiveTab('theory')} />
         <TabButton icon={<BeakerIcon className="w-5 h-5 mr-2"/>} label="Criterios" isActive={activeTab === 'criteria'} onClick={() => setActiveTab('criteria')} />
         <TabButton icon={<QuestionMarkCircleIcon className="w-5 h-5 mr-2"/>} label="¿Cuánto Sabes?" isActive={activeTab === 'quiz'} onClick={() => setActiveTab('quiz')} />
@@ -46,7 +46,7 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ icon, label, isActive, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex items-center justify-center px-5 py-3 rounded-lg font-semibold text-sm transition-all duration-300 focus:outline-none flex-1 border border-slate-600 ${
+        className={`flex items-center justify-center px-5 py-3 rounded-lg font-semibold text-sm transition-all duration-300 focus:outline-none border border-slate-600 ${
         isActive ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gradient-to-r from-slate-700 to-slate-600 text-slate-100 hover:bg-slate-500 hover:text-white hover:shadow-lg hover:border-slate-400'
         }`}
     >
