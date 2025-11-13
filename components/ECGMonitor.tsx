@@ -117,7 +117,7 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
                 </div>
             </div>
             <div className="text-right">
-                <span className="text-xs sm:text-sm block text-gray-400">HR</span>
+                <span className="text-xs sm:text-sm block text-gray-400">Latidos</span>
                 <span className="text-2xl sm:text-4xl font-bold text-green-300">{heartRateValue}</span>
             </div>
         </div>
