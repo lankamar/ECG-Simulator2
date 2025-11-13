@@ -203,8 +203,8 @@ export const arrhythmias: Arrhythmia[] = [
     },
   },
   {
-    id: 'afib',
-    name: 'Fibrilación Auricular',
+    id: 'afib_moderate',
+    name: 'Fibrilación Auricular Moderada',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Ritmo totalmente irregular, sin ondas P claras, QRS de intervalo variable, actividad auricular caótica.',
     criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: 'Variable (ej. 60-100 L/m)', pWave: 'Ausente (ondas fibrilatorias)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'},
