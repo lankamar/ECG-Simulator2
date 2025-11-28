@@ -1,0 +1,52 @@
+name: Build and Deploy React App to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Paso 2: Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      # Paso 3: Instalar dependencias
+      - name: Install dependencies
+        run: npm ci
+
+      # Paso 4: Compilar la aplicación React
+      - name: Build React app
+        run: npm run build
+
+      # Paso 5: Desplegar a Hostinger via SFTP
+      - name: Deploy to Hostinger
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          password: ${{ secrets.HOSTINGER_PASSWORD }}
+          server: ${{ secrets.HOSTINGER_SERVER }}
+          port: 22
+          local_path: './dist/*'
+          remote_path: '/public_html/'
+          delete: 'false'
+
+      # Paso 6: Notificar en caso de error
+      - name: Deployment failed notification
+        if: failure()
+        run: echo "❌ Deployment failed. Check GitHub Actions logs."
+
+      # Paso 7: Notificar éxito
+      - name: Deployment success notification
+        if: success()
+        run: echo "✅ Deployment successful! Check https://khaki-scorpion-181908.hostingersite.com"
