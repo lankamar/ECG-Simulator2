@@ -18,3 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/19uJTQKSXJ3wRo_4j9cg_pe
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+
+<!-- Updated via Hostinger Auto-Deploy Webhook -->
+<!-- Test deployment: 
