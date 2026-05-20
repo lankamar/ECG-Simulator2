@@ -29,12 +29,18 @@ const create12LeadBeat = (startTime: number, pVector: Vector | null, qrsVector: 
     const tStartTime = qrsStartTime + qrsVector.duration + 0.08;
 
 
-    // --- Frontal Leads Projection ---
+    // --- P Wave: Frontal + Precordial Projection ---
     if (pVector) {
+        const pMagPrecordial: Record<string, number> = { V1: 0.04, V2: 0.05, V3: 0.06, V4: 0.06, V5: 0.05, V6: 0.04 };
         Object.keys(LEAD_ANGLES).forEach(lead => {
             const leadAngle = LEAD_ANGLES[lead];
-            const projection = Math.cos((pVector.angle - leadAngle) * Math.PI / 180);
+            const rawProjection = Math.cos((pVector.angle - leadAngle) * Math.PI / 180);
+            const projection = Math.abs(rawProjection) < 0.05 ? 0.08 * Math.sign(rawProjection + 0.01) : rawProjection;
             beatData[lead].push(...generateComponent(startTime, pVector.duration, pVector.points.map(([t,v]) => [t, v * pVector.magnitude * projection])));
+        });
+        ['V1','V2','V3','V4','V5','V6'].forEach(lead => {
+            const pMag = pMagPrecordial[lead] || 0.05;
+            beatData[lead].push(...generateComponent(startTime, pVector.duration, pVector.points.map(([t,v]) => [t, v * pMag])));
         });
     }
     
@@ -325,6 +331,43 @@ export const arrhythmias: Arrhythmia[] = [
         for(const lead in data) data[lead].sort((a,b) => a.time - b.time);
         return data;
     }
+  },
+  {
+    id: 'wandering_pacemaker',
+    name: 'Marcapaso Migratorio (Errante)',
+    category: ArrhythmiaCategory.SUPRAVENTRICULARES,
+    description: 'Ritmo auricular irregular donde el marcapaso migra entre el nodo sinusal, las aurículas y la unión AV. Presenta al menos 3 morfologías de onda P distintas, intervalos PR variables y frecuencia < 100 lpm.',
+    criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregular', rate: '< 100 L/m', pWave: 'Al menos 3 formas distintas', prInterval: 'Variable', qrs: 'Normal (< 0,12s)'},
+    clinicalSignificance: 'Suele ser un ritmo benigno, frecuentemente observado en jóvenes, atletas, o durante el sueño por aumento del tono vagal. También puede asociarse a enfermedad del nodo sinusal.',
+    nursingConsiderations: 'Evaluar si el paciente presenta síntomas. Monitorizar la frecuencia cardíaca. Generalmente no requiere tratamiento. Documentar el ritmo y su relación con la actividad del paciente.',
+    emergencyProtocol: 'No requiere tratamiento de emergencia. Si es sintomático (raro), se trata la causa subyacente.',
+    approximateBpm: 75,
+    quiz: [
+        { question: '¿Qué caracteriza al Marcapaso Migratorio?', options: ['Frecuencia > 100 lpm con ondas P idénticas', 'Migración del marcapaso con al menos 3 morfologías de P y frecuencia < 100 lpm', 'Ausencia completa de ondas P', 'QRS ancho y bizarro'], correctAnswer: 1, explanation: 'Se distingue de la MAT por tener una frecuencia cardíaca < 100 lpm, pero comparte la presencia de múltiples morfologías de onda P.'},
+        { question: '¿Cuál es la principal diferencia entre Marcapaso Migratorio y MAT?', options: ['La morfología del QRS', 'La frecuencia cardíaca (< 100 vs > 100 lpm)', 'La presencia de ondas P', 'El intervalo QT'], correctAnswer: 1, explanation: 'Electrocardiográficamente son iguales (múltiples morfologías P, PR variable), pero el Marcapaso Migratorio tiene frecuencia < 100 lpm mientras que la MAT es > 100 lpm.'},
+        { question: 'El Marcapaso Migratorio suele ser:', options: ['Una emergencia médica', 'Un ritmo benigno', 'Precursor de fibrilación ventricular', 'Indicación de marcapasos'], correctAnswer: 1, explanation: 'Generalmente es un hallazgo benigno, especialmente en personas jóvenes y atletas, y no requiere tratamiento.'},
+    ],
+    generateECGData: (duration) => {
+        let data: Record<string, ECGPoint[]> = {};
+        let time = 0;
+        const pVectors: Vector[] = [
+            {...NORMAL_P_VECTOR, angle: 60},
+            {...NORMAL_P_VECTOR, angle: 20, magnitude: 0.12},
+            {...NORMAL_P_VECTOR, angle: 100, magnitude: 0.1},
+        ];
+        while(time < duration) {
+            const interval = 60 / (60 + Math.random() * 35); // Rate 60-95 bpm, < 100
+            const p = pVectors[Math.floor(Math.random() * pVectors.length)];
+            const variablePR = 0.12 + Math.random() * 0.14; // PR variable 0.12-0.26s
+            const beat = create12LeadBeat(time, p, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR, variablePR);
+            for(const lead in beat) {
+                if(!data[lead]) data[lead] = [];
+                data[lead].push(...beat[lead]);
+            }
+            time += interval;
+        }
+        return data;
+    },
   },
   {
     id: 'mat',
