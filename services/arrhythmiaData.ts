@@ -125,7 +125,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Ritmo Sinusal Normal',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Ritmo cardíaco normal, frecuencia 60–100/min, onda P precede cada QRS, regular.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '60 a 100 L/m', pWave: 'Presente, precede cada QRS', prInterval: '0,12 a 0,20 Seg', qrs: 'Normal (< 0,12 Seg)', axis: 'Normal (0° a +90°)'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '60 a 100 L/m', pWave: 'Presente, precede cada QRS', prInterval: '0,12 a 0,20 Seg', qrs: 'Normal (< 0,12 Seg)', axis: 'Normal (0° a +90°)'
+    approximateBpm: 75,},
     quiz: [
         { question: '¿Cuál es el rango de frecuencia cardíaca para un Ritmo Sinusal Normal?', options: ['< 60 lpm', '60 a 100 lpm', '> 100 lpm', 'Variable'], correctAnswer: 1, explanation: 'El Ritmo Sinusal Normal se define por una frecuencia cardíaca entre 60 y 100 latidos por minuto.'},
         { question: 'En un Ritmo Sinusal Normal, la relación entre la onda P y el complejo QRS es:', options: ['Una onda P por cada QRS', 'Ausencia de ondas P', 'Más ondas P que QRS', 'Ondas P después del QRS'], correctAnswer: 0, explanation: 'La característica clave del ritmo sinusal es que cada impulso se origina en el nodo sinusal y se conduce a los ventrículos, resultando en una onda P seguida de un complejo QRS.'},
@@ -138,7 +139,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bradicardia Sinusal',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Frecuencia inferior a 60/min, ritmo regular, ondas P normales.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '< 60 L/m', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '< 0,12s', axis: 'Normal'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '< 60 L/m', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '< 0,12s', axis: 'Normal'
+    approximateBpm: 48,},
     quiz: [
         { question: 'La Bradicardia Sinusal se define por una frecuencia cardíaca:', options: ['Entre 60-80 lpm', 'Menor a 60 lpm', 'Mayor a 100 lpm', 'Irregular'], correctAnswer: 1, explanation: 'El prefijo "bradi-" significa lento. La Bradicardia Sinusal es un ritmo sinusal con una frecuencia inferior a 60 latidos por minuto.'},
         { question: '¿Cuál de las siguientes es una causa fisiológica común de bradicardia sinusal?', options: ['Fiebre', 'Ansiedad', 'Atletas bien entrenados', 'Hipovolemia'], correctAnswer: 2, explanation: 'Los atletas a menudo tienen un tono vagal aumentado en reposo, lo que ralentiza el nodo sinusal, siendo un hallazgo normal y eficiente para ellos.'},
@@ -151,7 +153,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Taquicardia Sinusal',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Frecuencia mayor a 100/min, ritmo regular, ondas P normales.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '> 100 L/m', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '< 0,12s', axis: 'Normal'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '> 100 L/m', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '< 0,12s', axis: 'Normal'
+    approximateBpm: 120,},
     quiz: [
         { question: 'La Taquicardia Sinusal se define por una frecuencia cardíaca:', options: ['Mayor a 100 lpm', 'Entre 80-100 lpm', 'Menor a 60 lpm', 'Irregular'], correctAnswer: 0, explanation: 'El prefijo "taqui-" significa rápido. La Taquicardia Sinusal es un ritmo sinusal con una frecuencia superior a 100 latidos por minuto.'},
         { question: '¿Cuál de las siguientes es una causa común de taquicardia sinusal?', options: ['Hipotermia', 'Hipotiroidismo', 'Ejercicio o fiebre', 'Uso de beta-bloqueantes'], correctAnswer: 2, explanation: 'El ejercicio, la fiebre, el dolor, la ansiedad y la hipovolemia son causas comunes que aumentan la descarga del nodo sinusal.'},
@@ -164,7 +167,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Extrasístole Auricular (CAP)',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Latido prematuro originado en un foco ectópico de las aurículas. La onda P es prematura y tiene una morfología diferente a la sinusal, seguida generalmente de un QRS estrecho.',
-    criteria: { rhythm: 'Irregular por latido prematuro', rhythmAnalysis: 'Irregular', rate: 'Depende del ritmo de base', pWave: 'Prematura, forma anormal', prInterval: 'Variable', qrs: 'Normal (< 0,12s)'},
+    criteria: { rhythm: 'Irregular por latido prematuro', rhythmAnalysis: 'Irregular', rate: 'Depende del ritmo de base', pWave: 'Prematura, forma anormal', prInterval: 'Variable', qrs: 'Normal (< 0,12s)'
+    approximateBpm: 70,},
     clinicalSignificance: 'Generalmente benignas en corazones sanos, pero pueden ser precursoras de taquiarritmias como FA o aleteo si son frecuentes.',
     nursingConsiderations: 'Monitorizar frecuencia y síntomas (palpitaciones). Evaluar factores desencadenantes como cafeína, estrés o alcohol. Registrar en la historia clínica.',
     emergencyProtocol: 'No requiere tratamiento de emergencia a menos que cause inestabilidad hemodinámica o desencadene una taquicardia sostenida.',
@@ -207,7 +211,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Fibrilación Auricular Moderada',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Ritmo totalmente irregular, sin ondas P claras, QRS de intervalo variable, actividad auricular caótica.',
-    criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: 'Variable (ej. 60-100 L/m)', pWave: 'Ausente (ondas fibrilatorias)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'},
+    criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: 'Variable (ej. 60-100 L/m)', pWave: 'Ausente (ondas fibrilatorias)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'
+    approximateBpm: 80,},
     quiz: [
         { question: '¿Cuál es la característica que define el ritmo en la Fibrilación Auricular?', options: ['Regular', 'Regularmente irregular', 'Irregularmente irregular', 'Lento'], correctAnswer: 2, explanation: 'La FA se caracteriza por un ritmo ventricular caótico y completamente impredecible, conocido como "irregularmente irregular".'},
         { question: 'En un ECG con Fibrilación Auricular, ¿qué reemplaza a las ondas P normales?', options: ['Ondas en diente de sierra', 'Ondas U', 'Línea isoeléctrica plana', 'Ondas fibrilatorias (ondas f)'], correctAnswer: 3, explanation: 'En la FA, la actividad auricular es caótica, lo que genera una línea de base ondulada y desorganizada conocida como ondas fibrilatorias o "ondas f".'},
@@ -235,14 +240,17 @@ export const arrhythmias: Arrhythmia[] = [
         return data;
     }
   },
-      { id: 'afib_low', name: 'Fibrilación Auricular Baja', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular lenta (40-60 lpm), ondas f finas y menos visibles.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '40 a 60 L/m', pWave: 'Ausente (ondas f finas)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' }, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Baja?', options: ['20-40 lpm', '40-60 lpm', '60-100 lpm', '>100 lpm'], correctAnswer: 1, explanation: 'La Fibrilación Auricular Baja presenta una respuesta ventricular lenta entre 40 y 60 latidos por minuto.' }, { question: '¿Cómo se caracterizan las ondas f en FA Baja?', options: ['Prominentes y caóticas', 'Finas y menos visibles', 'Ausentes completamente', 'Regulares y organizadas'], correctAnswer: 1, explanation: 'Las ondas fibrilatorias en FA Baja son finas y menos visibles, indicando menor actividad auricular desorganizada.' }, { question: '¿Cuál es la complicación principal de FA Baja?', options: ['Taquicardia extrema', 'Insuficiencia cardíaca por gasto bajo', 'Fibrilación ventricular', 'Bloqueo AV completo'], correctAnswer: 1, explanation: 'La respuesta ventricular lenta puede resultar en gasto cardíaco inadecuado, causando síntomas de bajo gasto cardíaco.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); const fLeadFactor: Record<string, number> = { V1: 1.0, V2: 0.8, V3: 0.5, V4: 0.3, V5: 0.2, V6: 0.15, DII: 0.5, DIII: 0.4, aVF: 0.4, DI: 0.2, aVL: 0.15, aVR: 0.1 }; let time = 0; while(time < duration) { const interval = 1.0 + Math.random() * 0.5; // 1.0-1.5 sec → 40-60 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); const factor = fLeadFactor[lead] || 0.3; for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.05 * factor}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             { id: 'afib_high', name: 'Fibrilación Auricular Alta', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular rápida (120-160 lpm), ondas f prominentes y caóticas.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '120 a 160 L/m', pWave: 'Ausente (ondas f prominentes)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' }, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Alta?', options: ['60-100 lpm', '100-120 lpm', '120-160 lpm', '>160 lpm'], correctAnswer: 2, explanation: 'La Fibrilación Auricular Alta presenta una respuesta ventricular rápida entre 120 y 160 latidos por minuto.' }, { question: '¿Cómo son las ondas f en FA Alta?', options: ['Finas y sutiles', 'Medianas', 'Prominentes y muy visibles', 'Ausentes'], correctAnswer: 2, explanation: 'Las ondas fibrilatorias en FA Alta son prominentes y fácilmente visibles, indicando actividad auricular muy desorganizada.' }, { question: '¿Cuál es el principal riesgo de FA Alta?', options: ['Bradicardia severa', 'Inestabilidad hemoddinámica y angina', 'Bloqueo AV', 'Ritmo idioventricular'], correctAnswer: 1, explanation: 'La respuesta ventricular muy rápida puede causar inestabilidad hemoddinámica, sincope, y en pacientes con cardiopatía, angina o infarto.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); const fLeadFactor: Record<string, number> = { V1: 1.0, V2: 0.8, V3: 0.5, V4: 0.3, V5: 0.2, V6: 0.15, DII: 0.5, DIII: 0.4, aVF: 0.4, DI: 0.2, aVL: 0.15, aVR: 0.1 }; let time = 0; while(time < duration) { const interval = 0.375 + Math.random() * 0.125; // 0.375-0.5 sec → 120-160 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); const factor = fLeadFactor[lead] || 0.3; for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.2 * factor}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
+      { id: 'afib_low', name: 'Fibrilación Auricular Baja', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular lenta (40-60 lpm), ondas f finas y menos visibles.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '40 a 60 L/m', pWave: 'Ausente (ondas f finas)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' 
+    approximateBpm: 50,}, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Baja?', options: ['20-40 lpm', '40-60 lpm', '60-100 lpm', '>100 lpm'], correctAnswer: 1, explanation: 'La Fibrilación Auricular Baja presenta una respuesta ventricular lenta entre 40 y 60 latidos por minuto.' }, { question: '¿Cómo se caracterizan las ondas f en FA Baja?', options: ['Prominentes y caóticas', 'Finas y menos visibles', 'Ausentes completamente', 'Regulares y organizadas'], correctAnswer: 1, explanation: 'Las ondas fibrilatorias en FA Baja son finas y menos visibles, indicando menor actividad auricular desorganizada.' }, { question: '¿Cuál es la complicación principal de FA Baja?', options: ['Taquicardia extrema', 'Insuficiencia cardíaca por gasto bajo', 'Fibrilación ventricular', 'Bloqueo AV completo'], correctAnswer: 1, explanation: 'La respuesta ventricular lenta puede resultar en gasto cardíaco inadecuado, causando síntomas de bajo gasto cardíaco.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); const fLeadFactor: Record<string, number> = { V1: 1.0, V2: 0.8, V3: 0.5, V4: 0.3, V5: 0.2, V6: 0.15, DII: 0.5, DIII: 0.4, aVF: 0.4, DI: 0.2, aVL: 0.15, aVR: 0.1 }; let time = 0; while(time < duration) { const interval = 1.0 + Math.random() * 0.5; // 1.0-1.5 sec → 40-60 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); const factor = fLeadFactor[lead] || 0.3; for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.05 * factor}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             { id: 'afib_high', name: 'Fibrilación Auricular Alta', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular rápida (120-160 lpm), ondas f prominentes y caóticas.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '120 a 160 L/m', pWave: 'Ausente (ondas f prominentes)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' 
+    approximateBpm: 140,}, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Alta?', options: ['60-100 lpm', '100-120 lpm', '120-160 lpm', '>160 lpm'], correctAnswer: 2, explanation: 'La Fibrilación Auricular Alta presenta una respuesta ventricular rápida entre 120 y 160 latidos por minuto.' }, { question: '¿Cómo son las ondas f en FA Alta?', options: ['Finas y sutiles', 'Medianas', 'Prominentes y muy visibles', 'Ausentes'], correctAnswer: 2, explanation: 'Las ondas fibrilatorias en FA Alta son prominentes y fácilmente visibles, indicando actividad auricular muy desorganizada.' }, { question: '¿Cuál es el principal riesgo de FA Alta?', options: ['Bradicardia severa', 'Inestabilidad hemoddinámica y angina', 'Bloqueo AV', 'Ritmo idioventricular'], correctAnswer: 1, explanation: 'La respuesta ventricular muy rápida puede causar inestabilidad hemoddinámica, sincope, y en pacientes con cardiopatía, angina o infarto.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); const fLeadFactor: Record<string, number> = { V1: 1.0, V2: 0.8, V3: 0.5, V4: 0.3, V5: 0.2, V6: 0.15, DII: 0.5, DIII: 0.4, aVF: 0.4, DI: 0.2, aVL: 0.15, aVR: 0.1 }; let time = 0; while(time < duration) { const interval = 0.375 + Math.random() * 0.125; // 0.375-0.5 sec → 120-160 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); const factor = fLeadFactor[lead] || 0.3; for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.2 * factor}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
    {
     id: 'aflutter',
     name: 'Aleteo Auricular',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Ondas auriculares "en dientes de sierra" (ondas F), ritmo regular o irregular según conducción AV. Frecuencia auricular ~300/min.',
-    criteria: { rhythm: 'Regular (con bloqueo fijo)', rhythmAnalysis: 'Regular', rate: 'Ventricular ~150 L/m (2:1)', pWave: 'Ondas F "en sierra"', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'},
+    criteria: { rhythm: 'Regular (con bloqueo fijo)', rhythmAnalysis: 'Regular', rate: 'Ventricular ~150 L/m (2:1)', pWave: 'Ondas F "en sierra"', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'
+    approximateBpm: 150,},
     quiz: [
         { question: '¿Cuál es la morfología clásica de la actividad auricular en el Aleteo Auricular?', options: ['Ondas P normales', 'Ondas fibrilatorias', 'Línea plana', 'Ondas en "dientes de sierra"'], correctAnswer: 3, explanation: 'El Aleteo Auricular se caracteriza por las ondas F, que tienen un patrón regular y repetitivo que se asemeja a los dientes de una sierra.'},
         { question: 'La frecuencia auricular típica en un Aleteo Auricular es de aproximadamente:', options: ['60-100 lpm', '100-150 lpm', '150-250 lpm', '250-350 lpm'], correctAnswer: 3, explanation: 'El circuito de reentrada auricular en el aleteo es muy rápido y organizado, generando impulsos a una frecuencia de alrededor de 300 lpm.'},
@@ -279,7 +287,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Aleteo Auricular con Bloqueo Variable',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Aleteo auricular con conducción AV variable (2:1, 3:1, 4:1). Ondas F "en dientes de sierra" regulares, pero el intervalo R-R varía según el bloqueo, generando un ritmo ventricular irregular.',
-    criteria: { rhythm: 'Irregular por bloqueo variable', rhythmAnalysis: 'Irregular', rate: 'Ventricular variable (~60-150 L/m)', pWave: 'Ondas F "en sierra" regulares', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'},
+    criteria: { rhythm: 'Irregular por bloqueo variable', rhythmAnalysis: 'Irregular', rate: 'Ventricular variable (~60-150 L/m)', pWave: 'Ondas F "en sierra" regulares', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'
+    approximateBpm: 100,},
     clinicalSignificance: 'El bloqueo AV variable puede deberse a fármacos que afectan el nodo AV (digoxina, betabloqueantes) o a enfermedad del nodo AV. La respuesta ventricular irregular puede causar síntomas de bajo gasto.',
     nursingConsiderations: 'Monitorizar frecuencia ventricular y estabilidad hemodinámica. Evaluar medicamentos que afectan la conducción AV. Documentar el patrón de bloqueo.',
     emergencyProtocol: 'Si hay inestabilidad hemodinámica por respuesta ventricular rápida, se puede considerar cardioversión eléctrica sincronizada. Si es lenta y sintomática, considerar marcapasos.',
@@ -322,7 +331,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Taquicardia Auricular Multifocal',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Ritmo auricular rápido e irregular caracterizado por al menos 3 morfologías de ondas P distintas, intervalos PR variables y una frecuencia cardíaca superior a 100 lpm.',
-    criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregular', rate: '> 100 L/m', pWave: 'Al menos 3 formas distintas', prInterval: 'Variable', qrs: 'Normal (< 0,12s)'},
+    criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregular', rate: '> 100 L/m', pWave: 'Al menos 3 formas distintas', prInterval: 'Variable', qrs: 'Normal (< 0,12s)'
+    approximateBpm: 120,},
     clinicalSignificance: 'Frecuentemente asociada a enfermedades pulmonares graves (EPOC, embolia pulmonar) o desequilibrios electrolíticos. Puede ser un precursor de la fibrilación auricular.',
     nursingConsiderations: 'Evaluar el estado respiratorio del paciente y los electrolitos. La monitorización continua es crucial. Tratar la causa subyacente es la prioridad.',
     emergencyProtocol: 'El tratamiento se centra en la condición subyacente. Si hay inestabilidad, se pueden usar bloqueadores de los canales de calcio o beta-bloqueantes con precaución.',
@@ -358,7 +368,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Taquicardia Paroxística Supraventricular (TPSV)',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Término general para taquicardias rápidas y regulares que se originan por encima de los ventrículos. Típicamente presenta un complejo QRS estrecho y una frecuencia de 150 a 250 lpm, con inicio y fin súbitos.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '150 a 250 L/m', pWave: 'A menudo no visible (oculta)', prInterval: 'No medible', qrs: 'Normal (< 0,12s)'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '150 a 250 L/m', pWave: 'A menudo no visible (oculta)', prInterval: 'No medible', qrs: 'Normal (< 0,12s)'
+    approximateBpm: 190,},
     clinicalSignificance: 'Puede causar síntomas como palpitaciones, mareos, disnea o síncope. Aunque rara vez es mortal en corazones sanos, puede provocar isquemia en pacientes con enfermedad coronaria.',
     nursingConsiderations: 'Evaluar la estabilidad hemodinámica del paciente. Intentar maniobras vagales (Valsalva, masaje carotídeo si está indicado). Preparar adenosina IV.',
     emergencyProtocol: 'Maniobras vagales. Si no son efectivas y el paciente está estable, administrar Adenosina IV (bolo rápido). Si está inestable, realizar cardioversión eléctrica sincronizada.',
@@ -386,7 +397,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Taquicardia por Reentrada Nodal AV (TRNAV)',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Es el tipo más común de TPSV. Se debe a un circuito de reentrada dentro del nodo AV. Se caracteriza por una taquicardia regular de QRS estrecho, con ondas P retrógradas que a menudo se ocultan en el QRS o aparecen justo después como una pseudo-S o pseudo-R\'.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '150 a 250 L/m', pWave: 'Retrógrada, oculta o pseudo-onda', prInterval: 'No aplicable', qrs: 'Normal (< 0,12s)'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '150 a 250 L/m', pWave: 'Retrógrada, oculta o pseudo-onda', prInterval: 'No aplicable', qrs: 'Normal (< 0,12s)'
+    approximateBpm: 170,},
     clinicalSignificance: 'Similar a otras TPSV, generalmente sintomática pero bien tolerada en pacientes sin cardiopatía estructural. La recurrencia es común.',
     nursingConsiderations: 'La evaluación y el manejo inicial son idénticos a los de la TPSV. La documentación del inicio y fin, y la respuesta a las maniobras es clave para el diagnóstico.',
     emergencyProtocol: 'Idéntico al de la TPSV: maniobras vagales, seguidas de adenosina para pacientes estables y cardioversión para inestables.',
@@ -417,7 +429,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Ritmo de Escape de la Unión',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Ritmo de escape que se origina en la unión AV cuando el nódulo sinusal falla. Frecuencia lenta, QRS estrecho, y ondas P ausentes o retrógradas.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '40 a 60 L/m', pWave: 'Ausente o invertida/retrógrada', prInterval: 'No aplicable', qrs: '< 0,12s', axis: 'Normal'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '40 a 60 L/m', pWave: 'Ausente o invertida/retrógrada', prInterval: 'No aplicable', qrs: '< 0,12s', axis: 'Normal'
+    approximateBpm: 52,},
     quiz: [
         { question: '¿Cuál es la frecuencia cardíaca característica de un Ritmo de Escape de la Unión?', options: ['< 40 lpm', '40 a 60 lpm', '60 a 100 lpm', '> 100 lpm'], correctAnswer: 1, explanation: 'El marcapasos intrínseco de la unión AV tiene una frecuencia de 40 a 60 latidos por minuto.'},
         { question: 'En un ritmo de la unión, ¿dónde se espera encontrar la onda P si es visible?', options: ['Siempre antes del QRS', 'Después del QRS (retrógrada)', 'Ausente o invertida', 'Normal y positiva'], correctAnswer: 2, explanation: 'Como el impulso se origina en la unión AV, las aurículas se despolarizan de forma retrógrada, lo que puede resultar en una onda P invertida antes del QRS, oculta dentro de él, o visible justo después.'},
@@ -442,7 +455,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bloqueo AV de 1er Grado',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Prolongación fija del intervalo PR > 0,20 segundos.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '> 0,20s (fijo)', qrs: '< 0,12s', axis: 'Normal'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '> 0,20s (fijo)', qrs: '< 0,12s', axis: 'Normal'
+    approximateBpm: 70,},
     quiz: [
         { question: '¿Cuál es el hallazgo ECG definitorio del Bloqueo AV de 1er Grado?', options: ['QRS ancho', 'Ausencia de ondas P', 'Intervalo PR > 0,20 segundos', 'Ritmo irregular'], correctAnswer: 2, explanation: 'El Bloqueo AV de 1er Grado se define únicamente por un retraso en la conducción AV, lo que se traduce en un intervalo PR prolongado y constante (>0.20s).'},
         { question: 'En este tipo de bloqueo, ¿cada onda P es seguida por un complejo QRS?', options: ['Sí, siempre', 'No, algunas se bloquean', 'Solo la mitad', 'Depende de la frecuencia'], correctAnswer: 0, explanation: 'A diferencia de los bloqueos de segundo o tercer grado, en el de primer grado todos los impulsos auriculares se conducen a los ventrículos, solo que lo hacen más lentamente.'},
@@ -467,7 +481,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bloqueo AV 2º Grado Mobitz I (Wenckebach)',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Bloqueo AV caracterizado por una prolongación progresiva del intervalo PR en latidos consecutivos, hasta que una onda P finalmente no es conducida y el ciclo se reinicia. Causa un ritmo "regularmente irregular".',
-    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Agrupamiento de latidos', rate: 'Bradicárdica', pWave: 'Normal, algunas no conducen', prInterval: 'Se alarga progresivamente', qrs: 'Normal (< 0,12s)'},
+    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Agrupamiento de latidos', rate: 'Bradicárdica', pWave: 'Normal, algunas no conducen', prInterval: 'Se alarga progresivamente', qrs: 'Normal (< 0,12s)'
+    approximateBpm: 45,},
     clinicalSignificance: 'Generalmente es un bloqueo benigno y transitorio localizado en el nodo AV. Rara vez progresa a bloqueo completo y a menudo es asintomático.',
     nursingConsiderations: 'Monitorizar al paciente, especialmente si es nuevo o si está tomando medicamentos que afectan el nodo AV (beta-bloqueantes, digoxina). Observar si hay progresión del bloqueo.',
     emergencyProtocol: 'No suele requerir tratamiento de emergencia. Si causa bradicardia sintomática, se debe considerar atropina y la suspensión de los fármacos causantes.',
@@ -510,7 +525,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bloqueo AV 2º Grado Mobitz II',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Ondas P bloqueadas súbitamente sin prolongación previa del PR. PR constante en los latidos conducidos. Puede ser peligroso.',
-    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Regularmente irregular', rate: 'Bradicárdica', pWave: 'Normal, algunas no conducen', prInterval: 'Constante en latidos conducidos', qrs: 'Puede ser ancho', axis: 'Variable'},
+    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Regularmente irregular', rate: 'Bradicárdica', pWave: 'Normal, algunas no conducen', prInterval: 'Constante en latidos conducidos', qrs: 'Puede ser ancho', axis: 'Variable'
+    approximateBpm: 45,},
     quiz: [
         { question: 'A diferencia del Mobitz I, el intervalo PR en los latidos conducidos de un Mobitz II es:', options: ['Progresivamente más largo', 'Progresivamente más corto', 'Constante', 'Variable'], correctAnswer: 2, explanation: 'La característica clave del Mobitz II es que el intervalo PR permanece constante antes y después de la onda P bloqueada.'},
         { question: 'El bloqueo en Mobitz II suele localizarse en el sistema de His-Purkinje. Esto hace que el QRS sea a menudo:', options: ['Estrecho', 'Ausente', 'Ancho', 'Variable'], correctAnswer: 2, explanation: 'Un bloqueo infranodal (por debajo del nodo AV) a menudo se asocia con un trastorno de conducción intraventricular, resultando en un complejo QRS ancho.'},
@@ -541,7 +557,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bloqueo AV 3er Grado (Completo)',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Disociación AV completa. Las aurículas y los ventrículos laten de forma independiente.',
-    criteria: { rhythm: 'Regular P-P, Regular R-R', rhythmAnalysis: 'Regular', rate: 'Ventricular 20-40 L/m', pWave: 'No relacionadas con QRS', prInterval: 'Variable', qrs: 'Ancho (>0,12s)', axis: 'Variable'},
+    criteria: { rhythm: 'Regular P-P, Regular R-R', rhythmAnalysis: 'Regular', rate: 'Ventricular 20-40 L/m', pWave: 'No relacionadas con QRS', prInterval: 'Variable', qrs: 'Ancho (>0,12s)', axis: 'Variable'
+    approximateBpm: 38,},
     quiz: [
         { question: '¿Qué significa "disociación AV" en el Bloqueo de 3er Grado?', options: ['Las aurículas laten más lento que los ventrículos', 'No hay actividad auricular', 'Las aurículas y los ventrículos laten de forma independiente', 'El QRS es estrecho'], correctAnswer: 2, explanation: 'En el bloqueo completo, ningún impulso auricular llega a los ventrículos. Las aurículas son controladas por el nodo sinusal y los ventrículos por un marcapasos de escape inferior, sin ninguna relación entre ellos.'},
         { question: 'En el bloqueo completo, la frecuencia auricular (ondas P) es generalmente ________ que la frecuencia ventricular (QRS).', options: ['Más rápida', 'Más lenta', 'Igual', 'El doble'], correctAnswer: 0, explanation: 'La frecuencia sinusal normal (60-100 lpm) es más rápida que la frecuencia de un ritmo de escape ventricular (20-40 lpm).'},
@@ -574,7 +591,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Síndrome de WPW',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
     description: 'Pre-excitación ventricular a través de una vía accesoria. Causa un intervalo PR corto y una onda delta al inicio del QRS.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '< 0,12s', qrs: 'Ancho con onda Delta', axis: 'Variable según vía'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '< 0,12s', qrs: 'Ancho con onda Delta', axis: 'Variable según vía'
+    approximateBpm: 80,},
     quiz: [
         { question: '¿Cuáles son los dos hallazgos ECG clásicos del síndrome de WPW?', options: ['PR largo y QRS estrecho', 'PR corto y onda Delta', 'Ausencia de onda P y ritmo irregular', 'Ondas T picudas y QRS ancho'], correctAnswer: 1, explanation: 'El WPW se caracteriza por un intervalo PR corto (<0.12s) y una onda Delta (un empastamiento inicial del complejo QRS) debido a la pre-excitación ventricular.'},
         { question: 'La causa subyacente del WPW es:', options: ['Un bloqueo en el nodo AV', 'Una vía de conducción accesoria', 'Un foco ectópico auricular', 'Isquemia miocárdica'], correctAnswer: 1, explanation: 'El WPW es causado por la presencia de una vía eléctrica anómala (vía accesoria o Haz de Kent) que conecta directamente las aurículas y los ventrículos, evitando el nodo AV.'},
@@ -601,7 +619,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Contracción Ventricular Prematura',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Un latido ectópico originado en los ventrículos. Causa un QRS ancho y bizarro, sin onda P precedente, seguido por una pausa compensatoria.',
-    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Irregular (latido prematuro)', rate: 'Depende del ritmo base', pWave: 'Ausente antes del PVC', prInterval: 'No aplicable al PVC', qrs: 'Ancho (>0,12s), bizarro', axis: 'Variable'},
+    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Irregular (latido prematuro)', rate: 'Depende del ritmo base', pWave: 'Ausente antes del PVC', prInterval: 'No aplicable al PVC', qrs: 'Ancho (>0,12s), bizarro', axis: 'Variable'
+    approximateBpm: 70,},
     quiz: [
         { question: '¿Cuál es la característica principal del complejo QRS en una CVP?', options: ['Estrecho y normal', 'Ausente', 'Ancho y de morfología bizarra', 'Precedido por una onda P normal'], correctAnswer: 2, explanation: 'Debido a que el impulso se origina en un foco ventricular, se propaga lentamente por el miocardio, resultando en un complejo QRS ancho (>0.12s) y de forma anormal.'},
         { question: 'La pausa que típicamente sigue a una CVP se denomina:', options: ['Pausa no compensatoria', 'Pausa sinusal', 'Pausa compensatoria completa', 'Bloqueo de salida'], correctAnswer: 2, explanation: 'La CVP no suele interferir con el ritmo del nodo sinusal. El siguiente impulso sinusal llega cuando los ventrículos están refractarios, por lo que se bloquea, y el latido siguiente aparece en su momento esperado, creando una pausa completa.'},
@@ -640,7 +659,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bigeminismo Ventricular',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Ritmo en el que cada latido sinusal normal es seguido por una Contracción Ventricular Prematura (CVP), creando un patrón repetitivo de "normal-ectópico".',
-    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Patrón 1:1', rate: 'Depende del ritmo base', pWave: 'Presente en latidos sinusales', prInterval: 'Normal en latidos sinusales', qrs: 'Normal y ancho (CVP) alternados'},
+    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Patrón 1:1', rate: 'Depende del ritmo base', pWave: 'Presente en latidos sinusales', prInterval: 'Normal en latidos sinusales', qrs: 'Normal y ancho (CVP) alternados'
+    approximateBpm: 70,},
     clinicalSignificance: 'Puede ser benigno, pero si es frecuente o en el contexto de una cardiopatía estructural, puede aumentar el riesgo de arritmias sostenidas como la TV.',
     nursingConsiderations: 'Evaluar los electrolitos del paciente (potasio, magnesio) y la oxigenación. Notificar al médico si el patrón es nuevo o si el paciente presenta síntomas.',
     emergencyProtocol: 'Generalmente no es una emergencia. El tratamiento se enfoca en corregir la causa subyacente. Si causa inestabilidad hemodinámica (raro), se trata como una TV.',
@@ -682,7 +702,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Trigeminismo Ventricular',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Ritmo en el que cada dos latidos sinusales normales son seguidos por una Contracción Ventricular Prematura (CVP), creando un patrón repetitivo de "normal-normal-ectópico".',
-    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Patrón 2:1', rate: 'Depende del ritmo base', pWave: 'Presente en latidos sinusales', prInterval: 'Normal en latidos sinusales', qrs: 'Dos normales, uno ancho (CVP)'},
+    criteria: { rhythm: 'Regularmente irregular', rhythmAnalysis: 'Patrón 2:1', rate: 'Depende del ritmo base', pWave: 'Presente en latidos sinusales', prInterval: 'Normal en latidos sinusales', qrs: 'Dos normales, uno ancho (CVP)'
+    approximateBpm: 75,},
     clinicalSignificance: 'Similar al bigeminismo, su importancia clínica depende del contexto (presencia de cardiopatía, síntomas, frecuencia).',
     nursingConsiderations: 'La evaluación y el manejo son similares a los del bigeminismo. Es importante documentar la frecuencia del patrón y cualquier síntoma asociado.',
     emergencyProtocol: 'No es una emergencia por sí mismo. El tratamiento se dirige a la causa subyacente. La intervención urgente solo es necesaria si desencadena arritmias más peligrosas.',
@@ -724,7 +745,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Taquicardia Ventricular',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Ritmo rápido (>100/min) de origen ventricular, con QRS ancho y regular.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '100 a 270 L/m', pWave: 'No visible', prInterval: 'No medible', qrs: 'Ancho (> 0,12s)', axis: 'Extremo/Indeterminado'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '100 a 270 L/m', pWave: 'No visible', prInterval: 'No medible', qrs: 'Ancho (> 0,12s)', axis: 'Extremo/Indeterminado'
+    approximateBpm: 180,},
     quiz: [
         { question: '¿Cuáles son los tres criterios clave para identificar una Taquicardia Ventricular?', options: ['FC < 60, QRS estrecho, ritmo irregular', 'FC > 100, QRS ancho, ritmo regular', 'FC 60-100, QRS estrecho, ondas P visibles', 'FC > 150, QRS estrecho, ritmo regular'], correctAnswer: 1, explanation: 'La TV se define clásicamente por ser una taquicardia de complejo ancho y regular.'},
         { question: 'La Taquicardia Ventricular sostenida es una emergencia médica porque puede:', options: ['Causar hipertensión severa', 'Progresar a un bloqueo AV', 'Degenerar en Fibrilación Ventricular', 'Ser asintomática'], correctAnswer: 2, explanation: 'La TV puede causar inestabilidad hemodinámica grave y es un precursor común de la Fibrilación Ventricular, que es un ritmo de paro cardíaco.'},
@@ -749,7 +771,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Torsades de Pointes',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Taquicardia ventricular polimórfica caracterizada por complejos QRS que parecen girar alrededor de la línea isoeléctrica. Asociada a un intervalo QT prolongado.',
-    criteria: { rhythm: 'Irregular', rhythmAnalysis: 'Irregular', rate: '150 a 250 L/m', pWave: 'No visible', prInterval: 'No medible', qrs: 'Ancho, polimórfico, "torsión"', axis: 'Variable'},
+    criteria: { rhythm: 'Irregular', rhythmAnalysis: 'Irregular', rate: '150 a 250 L/m', pWave: 'No visible', prInterval: 'No medible', qrs: 'Ancho, polimórfico, "torsión"', axis: 'Variable'
+    approximateBpm: 200,},
     quiz: [
         { question: 'La morfología característica de Torsades de Pointes es:', options: ['QRS ancho y monomórfico', 'QRS estrecho y regular', 'QRS que cambia de amplitud y eje (gira)', 'Ausencia de QRS'], correctAnswer: 2, explanation: 'El nombre "Torsades de Pointes" significa "torsión de las puntas", que describe cómo los picos de los complejos QRS parecen girar alrededor de la línea isoeléctrica.'},
         { question: 'Esta arritmia está comúnmente asociada con un hallazgo ECG subyacente, que es:', options: ['Intervalo PR corto', 'Intervalo QT prolongado', 'Onda U prominente', 'Bloqueo de rama'], correctAnswer: 1, explanation: 'La prolongación del intervalo QT, ya sea congénita o adquirida (por fármacos, electrolitos), es el principal factor de riesgo para desarrollar Torsades de Pointes.'},
@@ -780,7 +803,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Ritmo Idioventricular',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Ritmo de escape ventricular muy lento (20-40 lpm) con QRS ancho. Ocurre cuando fallan los marcapasos superiores.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '20 a 40 L/m', pWave: 'Ausente o disociada', prInterval: 'No aplicable', qrs: 'Ancho (> 0,12s)', axis: 'Indeterminado'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '20 a 40 L/m', pWave: 'Ausente o disociada', prInterval: 'No aplicable', qrs: 'Ancho (> 0,12s)', axis: 'Indeterminado'
+    approximateBpm: 32,},
     quiz: [
         { question: '¿Cuál es la frecuencia intrínseca de un Ritmo Idioventricular?', options: ['60-100 lpm', '40-60 lpm', '20-40 lpm', '>100 lpm'], correctAnswer: 2, explanation: 'El marcapasos intrínseco de los ventrículos es el más lento del corazón, con una frecuencia de 20 a 40 latidos por minuto. Funciona como un mecanismo de seguridad.'},
         { question: 'Un Ritmo Idioventricular generalmente indica:', options: ['Un corazón sano y atlético', 'Una falla de los marcapasos superiores (sinusal y de la unión)', 'Una respuesta al estrés o la cafeína', 'Una arritmia de reentrada'], correctAnswer: 1, explanation: 'Este ritmo de escape solo aparece cuando el nodo sinusal y el nodo AV han fallado en generar un impulso, lo que lo convierte en un ritmo de último recurso.'},
@@ -805,7 +829,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Ritmo Idioventricular Acelerado (RIVA)',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Ritmo ventricular regular con una frecuencia entre 40 y 120 lpm. Es más rápido que un ritmo de escape ventricular pero más lento que una taquicardia ventricular. A menudo se observa durante la reperfusión en un infarto de miocardio.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '40 a 120 L/m', pWave: 'Ausente o disociada', prInterval: 'No aplicable', qrs: 'Ancho (> 0,12s)'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '40 a 120 L/m', pWave: 'Ausente o disociada', prInterval: 'No aplicable', qrs: 'Ancho (> 0,12s)'
+    approximateBpm: 80,},
     clinicalSignificance: 'Generalmente es un ritmo benigno y autolimitado, considerado un marcador de reperfusión exitosa tras una angioplastia. No suele requerir tratamiento.',
     nursingConsiderations: 'Monitorizar al paciente y no confundirlo con una TV lenta. Evaluar el contexto clínico (post-IAM). El tratamiento antiarrítmico suele ser innecesario e incluso perjudicial.',
     emergencyProtocol: 'No se trata como una emergencia. Si causa hipotensión (raro), se puede intentar aumentar la frecuencia sinusal con atropina para "sobreestimular" el ritmo ventricular.',
@@ -833,7 +858,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Fibrilación Ventricular',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Actividad eléctrica ventricular caótica, sin QRS identificables. Paro cardíaco.',
-    criteria: { rhythm: 'Caótico', rhythmAnalysis: 'Caótico', rate: '>300/min', pWave: 'Ausente', prInterval: 'No medible', qrs: 'Ausente (ondas fibrilatorias)', axis: 'Indeterminado'},
+    criteria: { rhythm: 'Caótico', rhythmAnalysis: 'Caótico', rate: '>300/min', pWave: 'Ausente', prInterval: 'No medible', qrs: 'Ausente (ondas fibrilatorias)', axis: 'Indeterminado'
+    approximateBpm: 300,},
     quiz: [
         { question: '¿Cómo se describe la actividad eléctrica en la Fibrilación Ventricular?', options: ['Regular y rápida', 'Organizada pero lenta', 'Caótica y desorganizada', 'Ausente'], correctAnswer: 2, explanation: 'La FV es una actividad eléctrica ventricular completamente caótica, sin complejos QRS identificables, lo que impide cualquier contracción cardíaca efectiva.'},
         { question: 'Un paciente en Fibrilación Ventricular siempre estará:', options: ['Asintomático', 'Mareado pero consciente', 'En paro cardíaco (sin pulso)', 'Hipertenso'], correctAnswer: 2, explanation: 'La FV no produce gasto cardíaco. Es un ritmo de paro cardíaco que requiere intervención inmediata.'},
@@ -861,7 +887,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Asistolia',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Ausencia de actividad eléctrica. "Línea plana".',
-    criteria: { rhythm: 'Ausente', rhythmAnalysis: 'Ausente', rate: '0 L/m', pWave: 'Ausente', prInterval: 'No aplicable', qrs: 'Ausente', axis: 'No aplicable'},
+    criteria: { rhythm: 'Ausente', rhythmAnalysis: 'Ausente', rate: '0 L/m', pWave: 'Ausente', prInterval: 'No aplicable', qrs: 'Ausente', axis: 'No aplicable'
+    approximateBpm: 0,},
     quiz: [
         { question: '¿Qué se observa en el monitor durante la Asistolia?', options: ['Ondas rápidas y caóticas', 'Complejos QRS anchos', 'Una línea plana', 'Ondas en diente de sierra'], correctAnswer: 2, explanation: 'La Asistolia es la ausencia total de actividad eléctrica cardíaca, lo que se traduce en una línea plana en el monitor de ECG.'},
         { question: '¿La Asistolia es un ritmo "desfibrilable"?', options: ['Sí, es la prioridad', 'No, la desfibrilación no es efectiva', 'Solo si es de onda fina', 'Depende de la causa'], correctAnswer: 1, explanation: 'No se puede desfibrilar la ausencia de actividad eléctrica. El tratamiento para la asistolia se centra en la RCP de alta calidad y la administración de fármacos como la epinefrina para intentar restaurar la actividad eléctrica.'},
@@ -882,7 +909,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Ritmo de Marcapasos (VVI)',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Estimulación ventricular. Espiga de marcapasos seguida de un QRS ancho.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Programada (ej. 70 L/m)', pWave: 'Ausente o disociada', prInterval: 'No aplicable', qrs: 'Ancho, precedido por espiga', axis: 'Extremo (superior izquierdo)'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Programada (ej. 70 L/m)', pWave: 'Ausente o disociada', prInterval: 'No aplicable', qrs: 'Ancho, precedido por espiga', axis: 'Extremo (superior izquierdo)'
+    approximateBpm: 70,},
     quiz: [
         { question: '¿Cuál es el signo característico de un ritmo marcapaseado en el ECG?', options: ['Una onda P invertida', 'Un QRS estrecho', 'Una espiga vertical antes del QRS', 'Un intervalo QT corto'], correctAnswer: 2, explanation: 'El artefacto eléctrico generado por el marcapasos aparece como una espiga fina y vertical justo antes del complejo que está estimulando (en este caso, el QRS ventricular).'},
         { question: 'El complejo QRS en un ritmo con marcapasos ventricular es ancho porque:', options: ['La frecuencia es muy rápida', 'La estimulación se origina en el ventrículo', 'Hay un bloqueo AV asociado', 'La espiga interfiere con la medición'], correctAnswer: 1, explanation: 'Al igual que una CVP, la estimulación se origina en un punto del ventrículo y se propaga lentamente por el miocardio, no por el sistema de conducción rápido, lo que resulta en un QRS ancho.'},
@@ -912,7 +940,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bloqueo de Rama Derecha',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Bloqueo en la rama derecha. QRS ancho, patrón rSR\' en V1 ("orejas de conejo"), y S ancha y empastada en derivaciones laterales.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '>0,12s, rSR\' en V1, S ancha en V6', axis: 'Normal o desviado a la derecha'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '>0,12s, rSR\' en V1, S ancha en V6', axis: 'Normal o desviado a la derecha'
+    approximateBpm: 75,},
     quiz: [
         { question: '¿Cuál es el criterio principal para la duración del QRS en un bloqueo de rama completo?', options: ['< 0,10 s', '0,10 - 0,12 s', '≥ 0,12 s', 'Variable'], correctAnswer: 2, explanation: 'Un bloqueo de rama completo, ya sea derecho o izquierdo, se define por una duración del complejo QRS de 0,12 segundos o más.'},
         { question: 'El patrón morfológico clásico del Bloqueo de Rama Derecha en la derivación V1 es:', options: ['Una onda QS profunda', 'Una onda R alta y monofásica', 'Un patrón rSR\' ("orejas de conejo")', 'Un QRS estrecho'], correctAnswer: 2, explanation: 'El patrón rSR\' en V1 es el sello distintivo del RBBB, representando la activación tardía del ventrículo derecho.'},
@@ -937,7 +966,8 @@ export const arrhythmias: Arrhythmia[] = [
     name: 'Bloqueo de Rama Izquierda',
     category: ArrhythmiaCategory.VENTRICULARES,
     description: 'Bloqueo de la conducción en la rama izquierda del haz de His, causando una despolarización ventricular anormal. El QRS es ancho, con S profunda en V1 y R ancha/mellada en V6.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '>0,12s, S dominante en V1, R ancha en V6', axis: 'A menudo desviado a la izquierda'},
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: 'Variable', pWave: 'Normal', prInterval: '0,12-0,20s', qrs: '>0,12s, S dominante en V1, R ancha en V6', axis: 'A menudo desviado a la izquierda'
+    approximateBpm: 75,},
     quiz: [
         { question: 'La duración del QRS en un Bloqueo de Rama Izquierda completo es típicamente:', options: ['< 0,12 s', 'Variable', 'Normal', '≥ 0,12 s'], correctAnswer: 3, explanation: 'Al igual que el RBBB, un LBBB completo se define por una duración del QRS de 0,12 segundos o más.'},
         { question: 'En la derivación V1, el patrón típico de un LBBB es:', options: ['Un patrón rSR\'', 'Una onda R alta', 'Una onda S ancha y profunda (patrón QS o rS)', 'Un QRS normal'], correctAnswer: 2, explanation: 'En el LBBB, el impulso se aleja de V1 durante toda la despolarización ventricular, creando una onda predominantemente negativa (una S ancha y profunda).'},

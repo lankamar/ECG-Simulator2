@@ -58,6 +58,7 @@ const MiniLeadChart: React.FC<{ data: ECGPoint[], timeOffset: number, window: nu
 interface ECGMonitorProps {
   data: Record<string, ECGPoint[]>;
   heartRate: string;
+  approximateBpm?: number;
   timeOffset: number;
   windowSeconds: number;
   isPlaying: boolean;
@@ -70,6 +71,7 @@ interface ECGMonitorProps {
 const ECGMonitor: React.FC<ECGMonitorProps> = ({ 
     data, 
     heartRate, 
+    approximateBpm,
     timeOffset, 
     windowSeconds,
     isPlaying,
@@ -80,8 +82,8 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
 }) => {
   
   const heartRateValue = useMemo(() => {
+     if (approximateBpm !== undefined && approximateBpm !== null) return approximateBpm;
      if (!heartRate) return '---';
-     if(heartRate.includes('~')) return heartRate.replace('~','');
      const rate = parseInt(heartRate, 10);
      if (!isNaN(rate)) return rate;
      if (heartRate.includes('<') || heartRate.includes('>')) return parseInt(heartRate.replace(/[^0-9]/g, ''), 10);
@@ -90,7 +92,7 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
      const match = heartRate.match(/(\d+)\s*a\s*(\d+)/) || heartRate.match(/(\d+)-(\d+)/);
      if(match) return Math.round((parseInt(match[1]) + parseInt(match[2])) / 2);
      return '---';
-  }, [heartRate]);
+  }, [heartRate, approximateBpm]);
 
   const leadOrder = [
     ['DI', 'aVR', 'V1', 'V4'],

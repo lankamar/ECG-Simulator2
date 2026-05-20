@@ -72,6 +72,7 @@ const App: React.FC = () => {
             <ECGMonitor 
               data={ecgData} 
               heartRate={selectedArrhythmia.criteria.rate}
+              approximateBpm={selectedArrhythmia.approximateBpm}
               timeOffset={timeOffset}
               windowSeconds={MONITOR_WINDOW_SECONDS}
               isPlaying={isPlaying}

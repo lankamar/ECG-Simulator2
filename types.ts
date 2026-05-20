@@ -34,4 +34,5 @@ export interface Arrhythmia {
   clinicalSignificance?: string;
   nursingConsiderations?: string;
   emergencyProtocol?: string;
+  approximateBpm?: number;
 }
