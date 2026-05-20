@@ -1,4 +1,4 @@
-import { Arrhythmia, ECGPoint, ArrhythmiaCategory } from '../types';
+﻿import { Arrhythmia, ECGPoint, ArrhythmiaCategory } from '../types';
 
 // --- 12-Lead Vectorial Generation Engine ---
 
@@ -216,15 +216,16 @@ export const arrhythmias: Arrhythmia[] = [
     generateECGData: (duration) => {
         let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []]));
         let time = 0;
+        const fLeadFactor: Record<string, number> = { V1: 1.0, V2: 0.8, V3: 0.5, V4: 0.3, V5: 0.2, V6: 0.15, DII: 0.5, DIII: 0.4, aVF: 0.4, DI: 0.2, aVL: 0.15, aVR: 0.1 };
         while(time < duration) {
-            const interval = 0.4 + Math.random() * 0.5; // R-R irregular
+            const interval = 0.6 + Math.random() * 0.4; // 0.6-1.0 sec → 60-100 lpm
             const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR);
             for(const lead in beat) {
                 data[lead].push(...beat[lead]);
-                // Add fibrillation waves
+                const factor = fLeadFactor[lead] || 0.3;
                 for (let t = time; t < time + interval; t += 0.03) {
                      if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) {
-                        data[lead].push({time: t, value: (Math.random() - 0.5) * 0.1});
+                        data[lead].push({time: t, value: (Math.random() - 0.5) * 0.12 * factor});
                     }
                 }
             }
@@ -234,8 +235,8 @@ export const arrhythmias: Arrhythmia[] = [
         return data;
     }
   },
-      { id: 'afib_low', name: 'Fibrilación Auricular Baja', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular lenta (40-60 lpm), ondas f finas y menos visibles.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '40 a 60 L/m', pWave: 'Ausente (ondas f finas)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' }, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Baja?', options: ['20-40 lpm', '40-60 lpm', '60-100 lpm', '>100 lpm'], correctAnswer: 1, explanation: 'La Fibrilación Auricular Baja presenta una respuesta ventricular lenta entre 40 y 60 latidos por minuto.' }, { question: '¿Cómo se caracterizan las ondas f en FA Baja?', options: ['Prominentes y caóticas', 'Finas y menos visibles', 'Ausentes completamente', 'Regulares y organizadas'], correctAnswer: 1, explanation: 'Las ondas fibrilatorias en FA Baja son finas y menos visibles, indicando menor actividad auricular desorganizada.' }, { question: '¿Cuál es la complicación principal de FA Baja?', options: ['Taquicardia extrema', 'Insuficiencia cardíaca por gasto bajo', 'Fibrilación ventricular', 'Bloqueo AV completo'], correctAnswer: 1, explanation: 'La respuesta ventricular lenta puede resultar en gasto cardíaco inadecuado, causando síntomas de bajo gasto cardíaco.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); let time = 0; while(time < duration) { const interval = 0.6 + Math.random() * 0.4; // 0.6-1.0 sec → 60-100 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.05}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             { id: 'afib_high', name: 'Fibrilación Auricular Alta', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular rápida (120-160 lpm), ondas f prominentes y caóticas.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '120 a 160 L/m', pWave: 'Ausente (ondas f prominentes)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' }, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Alta?', options: ['60-100 lpm', '100-120 lpm', '120-160 lpm', '>160 lpm'], correctAnswer: 2, explanation: 'La Fibrilación Auricular Alta presenta una respuesta ventricular rápida entre 120 y 160 latidos por minuto.' }, { question: '¿Cómo son las ondas f en FA Alta?', options: ['Finas y sutiles', 'Medianas', 'Prominentes y muy visibles', 'Ausentes'], correctAnswer: 2, explanation: 'Las ondas fibrilatorias en FA Alta son prominentes y fácilmente visibles, indicando actividad auricular muy desorganizada.' }, { question: '¿Cuál es el principal riesgo de FA Alta?', options: ['Bradicardia severa', 'Inestabilidad hemoddinámica y angina', 'Bloqueo AV', 'Ritmo idioventricular'], correctAnswer: 1, explanation: 'La respuesta ventricular muy rápida puede causar inestabilidad hemoddinámica, sincope, y en pacientes con cardiopatía, angina o infarto.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); let time = 0; while(time < duration) { const interval = 0.25 + Math.random() * 0.25; // 0.25-0.5 sec → 120-240 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.15}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
+      { id: 'afib_low', name: 'Fibrilación Auricular Baja', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular lenta (40-60 lpm), ondas f finas y menos visibles.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '40 a 60 L/m', pWave: 'Ausente (ondas f finas)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' }, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Baja?', options: ['20-40 lpm', '40-60 lpm', '60-100 lpm', '>100 lpm'], correctAnswer: 1, explanation: 'La Fibrilación Auricular Baja presenta una respuesta ventricular lenta entre 40 y 60 latidos por minuto.' }, { question: '¿Cómo se caracterizan las ondas f en FA Baja?', options: ['Prominentes y caóticas', 'Finas y menos visibles', 'Ausentes completamente', 'Regulares y organizadas'], correctAnswer: 1, explanation: 'Las ondas fibrilatorias en FA Baja son finas y menos visibles, indicando menor actividad auricular desorganizada.' }, { question: '¿Cuál es la complicación principal de FA Baja?', options: ['Taquicardia extrema', 'Insuficiencia cardíaca por gasto bajo', 'Fibrilación ventricular', 'Bloqueo AV completo'], correctAnswer: 1, explanation: 'La respuesta ventricular lenta puede resultar en gasto cardíaco inadecuado, causando síntomas de bajo gasto cardíaco.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); const fLeadFactor: Record<string, number> = { V1: 1.0, V2: 0.8, V3: 0.5, V4: 0.3, V5: 0.2, V6: 0.15, DII: 0.5, DIII: 0.4, aVF: 0.4, DI: 0.2, aVL: 0.15, aVR: 0.1 }; let time = 0; while(time < duration) { const interval = 1.0 + Math.random() * 0.5; // 1.0-1.5 sec → 40-60 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); const factor = fLeadFactor[lead] || 0.3; for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.05 * factor}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             { id: 'afib_high', name: 'Fibrilación Auricular Alta', category: ArrhythmiaCategory.SUPRAVENTRICULARES, description: 'Fibrilación auricular con respuesta ventricular rápida (120-160 lpm), ondas f prominentes y caóticas.', criteria: { rhythm: 'Irregularmente irregular', rhythmAnalysis: 'Irregularmente irregular', rate: '120 a 160 L/m', pWave: 'Ausente (ondas f prominentes)', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' }, quiz: [ { question: '¿Cuál es el rango de frecuencia para Fibrilación Auricular Alta?', options: ['60-100 lpm', '100-120 lpm', '120-160 lpm', '>160 lpm'], correctAnswer: 2, explanation: 'La Fibrilación Auricular Alta presenta una respuesta ventricular rápida entre 120 y 160 latidos por minuto.' }, { question: '¿Cómo son las ondas f en FA Alta?', options: ['Finas y sutiles', 'Medianas', 'Prominentes y muy visibles', 'Ausentes'], correctAnswer: 2, explanation: 'Las ondas fibrilatorias en FA Alta son prominentes y fácilmente visibles, indicando actividad auricular muy desorganizada.' }, { question: '¿Cuál es el principal riesgo de FA Alta?', options: ['Bradicardia severa', 'Inestabilidad hemoddinámica y angina', 'Bloqueo AV', 'Ritmo idioventricular'], correctAnswer: 1, explanation: 'La respuesta ventricular muy rápida puede causar inestabilidad hemoddinámica, sincope, y en pacientes con cardiopatía, angina o infarto.' } ], generateECGData: (duration) => { let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []])); const fLeadFactor: Record<string, number> = { V1: 1.0, V2: 0.8, V3: 0.5, V4: 0.3, V5: 0.2, V6: 0.15, DII: 0.5, DIII: 0.4, aVF: 0.4, DI: 0.2, aVL: 0.15, aVR: 0.1 }; let time = 0; while(time < duration) { const interval = 0.375 + Math.random() * 0.125; // 0.375-0.5 sec → 120-160 lpm const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR); for(const lead in beat) { data[lead].push(...beat[lead]); const factor = fLeadFactor[lead] || 0.3; for (let t = time; t < time + interval; t += 0.03) { if (!data[lead].some(p => Math.abs(p.time - t) < 0.01)) { data[lead].push({time: t, value: (Math.random() - 0.5) * 0.2 * factor}); } } } time += interval; } for(const lead in data) data[lead].sort((a,b) => a.time - b.time); return data; } },
    {
     id: 'aflutter',
     name: 'Aleteo Auricular',
@@ -274,6 +275,49 @@ export const arrhythmias: Arrhythmia[] = [
     }
   },
   {
+    id: 'aflutter_variable',
+    name: 'Aleteo Auricular con Bloqueo Variable',
+    category: ArrhythmiaCategory.SUPRAVENTRICULARES,
+    description: 'Aleteo auricular con conducción AV variable (2:1, 3:1, 4:1). Ondas F "en dientes de sierra" regulares, pero el intervalo R-R varía según el bloqueo, generando un ritmo ventricular irregular.',
+    criteria: { rhythm: 'Irregular por bloqueo variable', rhythmAnalysis: 'Irregular', rate: 'Ventricular variable (~60-150 L/m)', pWave: 'Ondas F "en sierra" regulares', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable'},
+    clinicalSignificance: 'El bloqueo AV variable puede deberse a fármacos que afectan el nodo AV (digoxina, betabloqueantes) o a enfermedad del nodo AV. La respuesta ventricular irregular puede causar síntomas de bajo gasto.',
+    nursingConsiderations: 'Monitorizar frecuencia ventricular y estabilidad hemodinámica. Evaluar medicamentos que afectan la conducción AV. Documentar el patrón de bloqueo.',
+    emergencyProtocol: 'Si hay inestabilidad hemodinámica por respuesta ventricular rápida, se puede considerar cardioversión eléctrica sincronizada. Si es lenta y sintomática, considerar marcapasos.',
+    quiz: [
+        { question: '¿Qué caracteriza al Aleteo Auricular con Bloqueo Variable?', options: ['Frecuencia auricular irregular', 'Intervalo R-R irregular por cambios en el bloqueo AV', 'Ausencia de ondas F', 'QRS ancho permanentemente'], correctAnswer: 1, explanation: 'La frecuencia auricular es regular (ondas F a ~300/min), pero el bloqueo AV variable hace que la respuesta ventricular sea irregular.'},
+        { question: '¿Qué fármaco puede causar bloqueo AV variable en aleteo?', options: ['Lidocaína', 'Digoxina', 'Adrenalina', 'Atropina'], correctAnswer: 1, explanation: 'La digoxina aumenta el tono vagal y enlentece la conducción AV, pudiendo causar bloqueo variable en pacientes con aleteo auricular.'},
+        { question: '¿Cuál es el riesgo de un bloqueo 1:1 en aleteo?', options: ['Bradicardia severa', 'Respuesta ventricular muy rápida (~300 lpm) que causa inestabilidad', 'Asistolia', 'No tiene riesgos'], correctAnswer: 1, explanation: 'Si el bloqueo AV pasa a 1:1, la frecuencia ventricular sería de ~300 lpm, lo que es hemodinámicamente muy mal tolerado y puede degenerar en FV.'},
+    ],
+    generateECGData: (duration) => {
+        let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []]));
+        const atrialRate = 300;
+        const atrialInterval = 60 / atrialRate;
+        const flutterVector: Vector = { magnitude: 0.3, angle: 90, duration: atrialInterval, points: [[0,0],[0.5,-1],[1,0]]};
+
+        for(let time = 0; time < duration; time += atrialInterval) {
+            Object.keys(LEAD_ANGLES).forEach(lead => {
+                 const leadAngle = LEAD_ANGLES[lead];
+                 const projection = Math.cos((flutterVector.angle - leadAngle) * Math.PI / 180);
+                 const flutterWaveMagnitude = (lead === 'DII' || lead === 'DIII' || lead === 'aVF') ? -0.3 : 0.1;
+                 data[lead].push(...generateComponent(time, atrialInterval, [[0,0],[0.5, flutterWaveMagnitude * projection],[1,0]]));
+            });
+        }
+
+        let qrsTime = 0;
+        while(qrsTime < duration) {
+            const blockRatio = [2, 3, 4][Math.floor(Math.random() * 3)]; // Random 2:1, 3:1, or 4:1
+            const ventricularInterval = atrialInterval * blockRatio;
+            const beat = create12LeadBeat(qrsTime, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR);
+             for(const lead in beat) {
+                data[lead].push(...beat[lead]);
+            }
+            qrsTime += ventricularInterval;
+        }
+        for(const lead in data) data[lead].sort((a,b) => a.time - b.time);
+        return data;
+    }
+  },
+  {
     id: 'mat',
     name: 'Taquicardia Auricular Multifocal',
     category: ArrhythmiaCategory.SUPRAVENTRICULARES,
@@ -298,7 +342,8 @@ export const arrhythmias: Arrhythmia[] = [
         while(time < duration) {
             const interval = 60 / (110 + Math.random() * 20); // Rate > 100, irregular
             const p = pVectors[Math.floor(Math.random() * pVectors.length)];
-            const beat = create12LeadBeat(time, p, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR);
+            const variablePR = 0.14 + Math.random() * 0.12; // PR variable 0.14-0.26s
+            const beat = create12LeadBeat(time, p, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR, variablePR);
             for(const lead in beat) {
                 if(!data[lead]) data[lead] = [];
                 data[lead].push(...beat[lead]);
