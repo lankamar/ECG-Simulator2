@@ -91,8 +91,8 @@
 
 | Item | Descripción | Status | Notas |
 |------|------------|--------|-------|
-| O1 | IVR (Ritmo Idioventricular) vectores dedicados | ⚠️ | ce18df6/6ba037b — vectores agregados, verificar visualmente |
-| O2 | AIVR (RIVA) vectores dedicados | ⚠️ | ce18df6/6ba037b — vectores agregados, verificar visualmente |
+| O1 | IVR (Ritmo Idioventricular) vectores dedicados | ✅ | IVR_QRS_VECTOR angle -80, duration 0.24, morfología idioventricular |
+| O2 | AIVR (RIVA) vectores dedicados | ✅ | Mismos vectores IVR, frecuencia 80 bpm realista |
 | O3 | `approximateBpm` fuera de `criteria` (fix global) | ✅ | Todos los objetos Arrhythmia compliant |
 
 ---
@@ -108,8 +108,8 @@
 | Nuevas arritmias | 2 | 2 | 0 | 0 |
 | Infraestructura | 4 | 3 | 0 | 1 |
 | Metodología y Docs | 9 | 9 | 0 | 0 |
-| Otros | 3 | 1 | 2 | 0 |
-| **Total** | **41** | **38** | **2** | **1** |
+| Otros | 3 | 3 | 0 | 0 |
+| **Total** | **41** | **40** | **0** | **1** |
 
 ---
 
