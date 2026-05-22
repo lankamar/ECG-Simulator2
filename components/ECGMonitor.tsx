@@ -136,6 +136,10 @@ interface ECGMonitorProps {
   setIsPlaying: (isPlaying: boolean) => void;
   setPlaybackSpeed: (speed: number) => void;
   onZoomLead: (leadName: string) => void;
+  isMeasMode: boolean;
+  isClassMode: boolean;
+  setIsMeasMode: (v: boolean) => void;
+  setIsClassMode: (v: boolean) => void;
 }
 
 const ECGMonitor: React.FC<ECGMonitorProps> = ({ 
@@ -148,11 +152,13 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
     playbackSpeed,
     setIsPlaying,
     setPlaybackSpeed,
-    onZoomLead
+    onZoomLead,
+    isMeasMode,
+    isClassMode,
+    setIsMeasMode,
+    setIsClassMode,
 }) => {
   
-  const [isMeasMode, setIsMeasMode] = useState(false);
-  const [isClassMode, setIsClassMode] = useState(false);
   const [measPoints, setMeasPoints] = useState<Record<string, MeasPoint[]>>({});
 
   const handleAddPoint = useCallback((lead: string, p: MeasPoint) => {

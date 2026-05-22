@@ -17,6 +17,8 @@ const App: React.FC = () => {
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
   const [zoomedLeads, setZoomedLeads] = useState<string[]>(['DII']);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMeasMode, setIsMeasMode] = useState(false);
+  const [isClassMode, setIsClassMode] = useState(false);
 
   const ecgData = useMemo(() => {
     return selectedArrhythmia.generateECGData(20); // Generate 20 seconds of data
@@ -84,7 +86,7 @@ const App: React.FC = () => {
         <div className="flex flex-col min-h-0">
           <h2 className="text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 text-slate-100 flex-shrink-0">{selectedArrhythmia.name}</h2>
           
-          <div className="flex-grow mb-6 min-h-[400px]">
+            <div className="flex-grow mb-6 min-h-[400px]">
             <ECGMonitor 
               data={ecgData} 
               heartRate={selectedArrhythmia.criteria.rate}
@@ -96,6 +98,10 @@ const App: React.FC = () => {
               setIsPlaying={setIsPlaying}
               setPlaybackSpeed={setPlaybackSpeed}
               onZoomLead={handleZoomLead}
+              isMeasMode={isMeasMode}
+              isClassMode={isClassMode}
+              setIsMeasMode={setIsMeasMode}
+              setIsClassMode={setIsClassMode}
             />
           </div>
 
@@ -104,6 +110,7 @@ const App: React.FC = () => {
               data={ecgData['DII'] || []}
               timeOffset={timeOffset}
               windowSeconds={RHYTHM_STRIP_WINDOW_SECONDS}
+              isMeasMode={isMeasMode}
             />
           </div>
 
@@ -119,6 +126,7 @@ const App: React.FC = () => {
         initialLeads={zoomedLeads}
         timeOffset={timeOffset}
         windowSeconds={ZOOM_WINDOW_SECONDS}
+        isMeasMode={isMeasMode}
       />
     </div>
   );
