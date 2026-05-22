@@ -51,9 +51,9 @@
 
 | Item | Descripción | Status | Notas |
 |------|------------|--------|-------|
-| F1 | FA Baja: ondas f más visibles (0.05→0.12) | ❌ Pendiente | Actualmente amplitud muy baja |
-| F2 | FA Moderada: ondas f visibles | ❌ Pendiente | Revisar amplitud actual |
-| F3 | FA Alta: ondas f prominentes (0.2→0.3) | ❌ Pendiente | Mejorar visibilidad |
+| F1 | FA Baja: ondas f más visibles (0.05→0.12) | ✅ | ce18df6 |
+| F2 | FA Moderada: ondas f visibles | ✅ | ce18df6 |
+| F3 | FA Alta: ondas f prominentes (0.2→0.35) | ✅ | ce18df6 |
 
 ### Nuevas Arritmias Agregadas
 
@@ -68,35 +68,50 @@
 |------|------------|--------|-------|
 | I1 | Error sintaxis `//` en afib_low/afib_high (build breaking) | ✅ | Fix crítico |
 | I2 | Build `npx vite build` exitoso | ✅ | Verificado |
-| I3 | `package-lock.json` no está en el repo | ❌ | Causa fallo en GitHub Actions (npm ci) |
-| I4 | GitHub Actions usa `npm ci` sin lockfile | ❌ | Cambiar a `npm install` o agregar lockfile |
+| I3 | `package-lock.json` trackeado en el repo | ✅ | ce18df6 |
+| I4 | deploy.yml eliminado (usa Vercel auto-deploy) | ✅ | 3cd5c09 — reemplazado por Vercel |
 | I5 | Vercel deploy funciona | ✅ | https://ecg-simulator2.vercel.app |
-| I6 | Hostinger deploy (GH Actions) | ❌ | Fallando por falta de lockfile |
+| I6 | GitHub Actions workflow por crear | ❌ | .github/workflows/ vacío — pendiente |
+
+### Metodología y Documentación
+
+| Item | Descripción | Status | Notas |
+|------|------------|--------|-------|
+| M1 | `.spec/constitution.md` — principios del proyecto | ✅ | Creado |
+| M2 | `.spec/methodology.md` — metodología completa de trabajo | ✅ | Creado — incluye workflow, encoding, resume guide |
+| M3 | `.spec/team-design.md` — diseño de equipo de 6 subagentes | ✅ | Creado |
+| M4 | `.spec/sprint-002-audit-team.md` — plan de auditoría | ✅ | Creado |
+| M5 | `.opencode/agents/*.md` — 6 skills de subagentes | ✅ | ecg-engineer, react-architect, tooling-ops, qa-verifier, git-ops, vercel-monitor |
+| M6 | `.opencode/agents/agent-system.md` — overview del sistema de agentes | ✅ | Creado |
+| M7 | `.opencode/coordinator.md` — skill del coordinador | ✅ | Creado |
+| M8 | `opencode.json` — registro de agentes (7: coordinator + 6 subagentes) | ✅ | Actualizado |
+| M9 | Encoding UTF-8 en todos los archivos nuevos | ✅ | Verificado 0 U+FFFD |
 
 ### Otros
 
 | Item | Descripción | Status | Notas |
 |------|------------|--------|-------|
-| O1 | IVR (Ritmo Idioventricular) gráficos pobres | ❌ | Pendiente de mejorar morfología |
-| O2 | AIVR (RIVA) gráficos pobres | ❌ | Pendiente de mejorar morfología |
+| O1 | IVR (Ritmo Idioventricular) vectores dedicados | ⚠️ | ce18df6/6ba037b — vectores agregados, verificar visualmente |
+| O2 | AIVR (RIVA) vectores dedicados | ⚠️ | ce18df6/6ba037b — vectores agregados, verificar visualmente |
 | O3 | `approximateBpm` fuera de `criteria` (fix global) | ✅ | Todos los objetos Arrhythmia compliant |
 
 ---
 
 ## Resumen
 
-| Categoría | Total | ✅ | ❌ |
-|-----------|-------|----|-----|
-| Ondas P | 6 | 6 | 0 |
-| Complejos QRS | 5 | 5 | 0 |
-| Arritmias específicas | 9 | 9 | 0 |
-| Fibrilación Auricular | 3 | 0 | 3 |
-| Nuevas arritmias | 2 | 2 | 0 |
-| Infraestructura | 6 | 3 | 3 |
-| Otros | 3 | 1 | 2 |
-| **Total** | **34** | **26** | **8** |
+| Categoría | Total | ✅ | ⚠️ | ❌ |
+|-----------|-------|----|-----|-----|
+| Ondas P | 6 | 6 | 0 | 0 |
+| Complejos QRS | 5 | 5 | 0 | 0 |
+| Arritmias específicas | 9 | 9 | 0 | 0 |
+| Fibrilación Auricular | 3 | 3 | 0 | 0 |
+| Nuevas arritmias | 2 | 2 | 0 | 0 |
+| Infraestructura | 4 | 3 | 0 | 1 |
+| Metodología y Docs | 9 | 9 | 0 | 0 |
+| Otros | 3 | 1 | 2 | 0 |
+| **Total** | **41** | **38** | **2** | **1** |
 
 ---
 
-*Checklist generado el 20 de mayo de 2026*
-*Próxima acción recomendada: Fix FA waves + IVR/AIVR + lockfile → push a main*
+*Checklist generado el 21 de mayo de 2026*
+*Próxima acción recomendada: Crear GitHub Actions workflow CI + verificar visualmente IVR/AIVR*

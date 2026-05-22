@@ -1,0 +1,47 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "coordinator": {
+      "description": "Coordinador principal. Orquesta flujo SDD, invoca subagentes, mantiene estado de conversación, aplica encoding UTF-8. Punto único de entrada para el usuario.",
+      "mode": "primary",
+      "model": "opencode/deepseek-v4-flash-free",
+      "file": ".opencode/coordinator.md"
+    },
+    "ecg-engineer": {
+      "description": "Diseña y ajusta vectores cardíacos P/QRS/T para arritmias. Trabaja en arrhythmiaData.ts y types.ts.",
+      "mode": "subagent",
+      "model": "opencode/deepseek-v4-flash-free",
+      "file": ".opencode/agents/ecg-engineer.md"
+    },
+    "react-architect": {
+      "description": "Construye UI React: grilla 12 derivaciones, tira de ritmo, zoom. Trabaja en App.tsx y components/.",
+      "mode": "subagent",
+      "model": "opencode/deepseek-v4-flash-free",
+      "file": ".opencode/agents/react-architect.md"
+    },
+    "tooling-ops": {
+      "description": "Configura build, encoding UTF-8, Vite, vercel.json, .gitignore. Trabaja en archivos de configuración raíz.",
+      "mode": "subagent",
+      "model": "opencode/deepseek-v4-flash-free",
+      "file": ".opencode/agents/tooling-ops.md"
+    },
+    "qa-verifier": {
+      "description": "Quality gate: verifica build, encoding, estructura de arritmias, actualiza CHECKLIST. Solo permisos de lectura.",
+      "mode": "subagent",
+      "model": "opencode/deepseek-v4-flash-free",
+      "file": ".opencode/agents/qa-verifier.md"
+    },
+    "git-ops": {
+      "description": "Gestiona commits, push, GitHub Actions, y workflows CI. Trabaja en .github/.",
+      "mode": "subagent",
+      "model": "opencode/deepseek-v4-flash-free",
+      "file": ".opencode/agents/git-ops.md"
+    },
+    "vercel-monitor": {
+      "description": "Monitorea deploy post-push: HTTP 200, encoding, errores runtime, regresión visual.",
+      "mode": "subagent",
+      "model": "opencode/deepseek-v4-flash-free",
+      "file": ".opencode/agents/vercel-monitor.md"
+    }
+  }
+}
