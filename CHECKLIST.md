@@ -87,6 +87,15 @@
 | M8 | `opencode.json` — registro de agentes (7: coordinator + 6 subagentes) | ✅ | Actualizado |
 | M9 | Encoding UTF-8 en todos los archivos nuevos | ✅ | Verificado 0 U+FFFD |
 
+### Features Nuevas (Sprint 22/05/2026)
+
+| Item | Descripción | Status | Notas |
+|------|------------|--------|-------|
+| F1 | **Filtro por categoría en Sidebar** | ✅ | Pestañas Todas/Supraventriculares/Ventriculares + búsqueda por nombre |
+| F2 | **Diseño responsivo móvil** | ✅ | Sidebar colapsable con hamburguesa, grid 2 cols, espaciado adaptativo |
+| F3 | **Herramienta de medición (BPM/mV)** | ✅ | Click → punto, 2do click → mide tiempo (BPM) y voltaje (mV). Funciona en grilla 12-lead, tira de ritmo y lupa |
+| F4 | **Modo Clase** | ✅ | Oculta el BPM automático para que los alumnos midan manualmente |
+
 ### Otros
 
 | Item | Descripción | Status | Notas |
@@ -106,12 +115,13 @@
 | Arritmias específicas | 9 | 9 | 0 | 0 |
 | Fibrilación Auricular | 3 | 3 | 0 | 0 |
 | Nuevas arritmias | 2 | 2 | 0 | 0 |
+| Features (22/05) | 4 | 4 | 0 | 0 |
 | Infraestructura | 4 | 3 | 0 | 1 |
 | Metodología y Docs | 9 | 9 | 0 | 0 |
 | Otros | 3 | 3 | 0 | 0 |
-| **Total** | **41** | **40** | **0** | **1** |
+| **Total** | **45** | **44** | **0** | **1** |
 
 ---
 
-*Checklist generado el 21 de mayo de 2026*
-*Próxima acción recomendada: Crear GitHub Actions workflow CI + verificar visualmente IVR/AIVR*
+*Checklist generado el 22 de mayo de 2026*
+*Próxima acción recomendada: GitHub Actions CI workflow + i18n EN/ES/PT*
