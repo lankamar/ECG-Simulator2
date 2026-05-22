@@ -25,9 +25,10 @@ interface RhythmStripProps {
   timeOffset: number;
   windowSeconds: number;
   isMeasMode?: boolean;
+  title?: string;
 }
 
-const RhythmStrip: React.FC<RhythmStripProps> = ({ data, timeOffset, windowSeconds, isMeasMode }) => {
+const RhythmStrip: React.FC<RhythmStripProps> = ({ data, timeOffset, windowSeconds, isMeasMode, title }) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [measPoints, setMeasPoints] = useState<MeasPoint[]>([]);
@@ -87,7 +88,7 @@ const RhythmStrip: React.FC<RhythmStripProps> = ({ data, timeOffset, windowSecon
 
   return (
     <div className="flex flex-col">
-      <h3 className="text-lg font-semibold text-slate-200 mb-2">Tira de Ritmo - Derivación II (D2)</h3>
+      <h3 className="text-lg font-semibold text-slate-200 mb-2">{title || 'Tira de Ritmo'} - Derivación II (D2)</h3>
       <div ref={containerRef} className="bg-white rounded-md p-2 shadow-lg relative" style={{
         backgroundImage: `
           linear-gradient(rgba(255, 0, 0, 0.2) 1px, transparent 1px),

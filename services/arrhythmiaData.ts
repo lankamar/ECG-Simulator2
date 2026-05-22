@@ -13,6 +13,8 @@ const generateComponent = (startTime: number, duration: number, points: [number,
   }));
 };
 
+type BeatMorphology = 'lbbb' | 'rbbb' | 'vt';
+
 interface Vector {
     magnitude: number;
     angle: number;
@@ -20,7 +22,24 @@ interface Vector {
     points: [number, number][];
 }
 
-const create12LeadBeat = (startTime: number, pVector: Vector | null, qrsVector: Vector, tVector: Vector, prInterval: number = 0.16, morphology?: 'lbbb' | 'rbbb') => {
+const generatePWaveOnly = (startTime: number, pVector: Vector): Record<string, ECGPoint[]> => {
+    const leads = ['DI', 'DII', 'DIII', 'aVR', 'aVL', 'aVF', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6'];
+    const pWaveData: Record<string, ECGPoint[]> = Object.fromEntries(leads.map(l => [l, []]));
+    const pMagPrecordial: Record<string, number> = { V1: 0.15, V2: 0.18, V3: 0.22, V4: 0.25, V5: 0.22, V6: 0.18 };
+    Object.keys(LEAD_ANGLES).forEach(lead => {
+        const leadAngle = LEAD_ANGLES[lead];
+        const rawProjection = Math.cos((pVector.angle - leadAngle) * Math.PI / 180);
+        const projection = Math.abs(rawProjection) < 0.15 ? 0.35 * Math.sign(rawProjection + 0.01) : rawProjection;
+        pWaveData[lead].push(...generateComponent(startTime, pVector.duration, pVector.points.map(([t,v]) => [t, v * pVector.magnitude * projection])));
+    });
+    ['V1','V2','V3','V4','V5','V6'].forEach(lead => {
+        const pMag = pMagPrecordial[lead] || 0.15;
+        pWaveData[lead].push(...generateComponent(startTime, pVector.duration, pVector.points.map(([t,v]) => [t, v * pMag])));
+    });
+    return pWaveData;
+};
+
+const create12LeadBeat = (startTime: number, pVector: Vector | null, qrsVector: Vector, tVector: Vector, prInterval: number = 0.16, morphology?: BeatMorphology) => {
     const leads = ['DI', 'DII', 'DIII', 'aVR', 'aVL', 'aVF', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6'];
     const beatData: Record<string, ECGPoint[]> = Object.fromEntries(leads.map(l => [l, []]));
     const pDuration = pVector ? pVector.duration : 0;
@@ -73,10 +92,13 @@ const create12LeadBeat = (startTime: number, pVector: Vector | null, qrsVector: 
                  else if(isLateral) qrsPoints = [[0,0], [0.3, 0.8], [0.8, -0.6], [1, 0]]; // qRS with wide S
                  else qrsPoints = [ [0,0], [0.1, sWaveProgression[lead as keyof typeof sWaveProgression] * 0.2], [0.4, rWaveProgression[lead as keyof typeof rWaveProgression]], [0.7, sWaveProgression[lead as keyof typeof sWaveProgression]], [1, 0]];
                  tMag = isRight ? -0.3 : 0.3; // Discordant T in V1/V2
-            } else {
+             } else if (morphology === 'vt') {
+                 qrsPoints = [[0,0], [0.15, -0.3], [0.35, -1.2], [0.55, -0.8], [0.75, -0.3], [1,0]];
+                 tMag = 0.3;
+             } else {
                  qrsPoints = [ [0,0], [0.1, sWaveProgression[lead as keyof typeof sWaveProgression] * 0.2], [0.4, rWaveProgression[lead as keyof typeof rWaveProgression]], [0.7, sWaveProgression[lead as keyof typeof sWaveProgression]], [1, 0]];
                  tMag = lead.match(/V[4-6]/) ? 0.4 : 0.2;
-            }
+             }
 
             beatData[lead].push(...generateComponent(qrsStartTime, qrsVector.duration, qrsPoints.map(([t,v]) => [t, v * qrsVector.magnitude])));
             beatData[lead].push(...generateComponent(tStartTime, tVector.duration, tVector.points.map(([t,v]) => [t, v * tMag])));
@@ -88,9 +110,17 @@ const create12LeadBeat = (startTime: number, pVector: Vector | null, qrsVector: 
 
 
 // --- Beat Templates ---
-const NORMAL_P_VECTOR: Vector = { magnitude: 0.35, angle: 60, duration: 0.10, points: [[0,0], [0.4, 0.6], [0.5, 1], [0.6, 0.6], [1,0]]};
+const gaussPoints = (n: number, sigma: number): [number, number][] => Array.from({length: n + 1}, (_, i): [number, number] => {
+    const t = i / n;
+    const v = Math.exp(-((t - 0.5) ** 2) / (2 * sigma ** 2));
+    return [t, v];
+});
+
+const P_WAVE_POINTS: [number, number][] = gaussPoints(40, 0.20);
+
+const NORMAL_P_VECTOR: Vector = { magnitude: 0.25, angle: 60, duration: 0.10, points: P_WAVE_POINTS };
 const NORMAL_QRS_VECTOR: Vector = { magnitude: 1.0, angle: 45, duration: 0.09, points: [[0,0], [0.1, -0.2], [0.4, 1.0], [0.7, -0.4], [1, 0]] };
-const NORMAL_T_VECTOR: Vector = { magnitude: 0.3, angle: 45, duration: 0.14, points: [[0,0], [0.5, 1], [1,0]]};
+const NORMAL_T_VECTOR: Vector = { magnitude: 0.3, angle: 45, duration: 0.14, points: gaussPoints(40, 0.18) };
 const VT_QRS_VECTOR: Vector = { magnitude: 1.8, angle: -90, duration: 0.20, points: [[0,0], [0.2, 0.4], [0.35, 1.4], [0.5, -1.2], [0.7, 0.6], [1,0]]};
 const VT_T_VECTOR: Vector = { magnitude: 0.4, angle: 90, duration: 0.18, points: [[0,0], [0.5, -1], [1,0]]};
 const RBBB_QRS_VECTOR: Vector = { magnitude: 1.1, angle: 100, duration: 0.14, points: [[0,0], [0.4, 1.0], [0.7, -0.4], [1, 0]] };
@@ -279,47 +309,10 @@ export const arrhythmias: Arrhythmia[] = [
             Object.keys(LEAD_ANGLES).forEach(lead => {
                  const leadAngle = LEAD_ANGLES[lead];
                  const projection = Math.cos((flutterVector.angle - leadAngle) * Math.PI / 180);
-                 const flutterWaveMagnitude = (lead === 'DII' || lead === 'DIII' || lead === 'aVF') ? 0.6 : 0.2;
-                 data[lead].push(...generateComponent(time, atrialInterval, [[0,0],[0.25, 0.1 * flutterWaveMagnitude],[0.5, -flutterWaveMagnitude],[0.75, -0.3 * flutterWaveMagnitude],[1,0.05 * flutterWaveMagnitude]]));
-            });
-        }
-        for(let time = atrialInterval * (block - 1); time < duration; time += ventricularInterval) {
-            const beat = create12LeadBeat(time, null, NORMAL_QRS_VECTOR, NORMAL_T_VECTOR);
-             for(const lead in beat) {
-                data[lead].push(...beat[lead]);
-            }
-        }
-        for(const lead in data) data[lead].sort((a,b) => a.time - b.time);
-        return data;
-    }
-  },
-  {
-    id: 'aflutter_variable',
-    name: 'Aleteo Auricular con Bloqueo Variable',
-    category: ArrhythmiaCategory.SUPRAVENTRICULARES,
-    description: 'Aleteo auricular con conducción AV variable (2:1, 3:1, 4:1). Ondas F "en dientes de sierra" regulares, pero el intervalo R-R varía según el bloqueo, generando un ritmo ventricular irregular.',
-    criteria: { rhythm: 'Irregular por bloqueo variable', rhythmAnalysis: 'Irregular', rate: 'Ventricular variable (~60-150 L/m)', pWave: 'Ondas F "en sierra" regulares', prInterval: 'No medible', qrs: '< 0,12s', axis: 'Variable' },
-    approximateBpm: 100,
-    clinicalSignificance: 'El bloqueo AV variable puede deberse a fármacos que afectan el nodo AV (digoxina, betabloqueantes) o a enfermedad del nodo AV. La respuesta ventricular irregular puede causar síntomas de bajo gasto.',
-    nursingConsiderations: 'Monitorizar frecuencia ventricular y estabilidad hemodinámica. Evaluar medicamentos que afectan la conducción AV. Documentar el patrón de bloqueo.',
-    emergencyProtocol: 'Si hay inestabilidad hemodinámica por respuesta ventricular rápida, se puede considerar cardioversión eléctrica sincronizada. Si es lenta y sintomática, considerar marcapasos.',
-    quiz: [
-        { question: '¿Qué caracteriza al Aleteo Auricular con Bloqueo Variable?', options: ['Frecuencia auricular irregular', 'Intervalo R-R irregular por cambios en el bloqueo AV', 'Ausencia de ondas F', 'QRS ancho permanentemente'], correctAnswer: 1, explanation: 'La frecuencia auricular es regular (ondas F a ~300/min), pero el bloqueo AV variable hace que la respuesta ventricular sea irregular.'},
-        { question: '¿Qué fármaco puede causar bloqueo AV variable en aleteo?', options: ['Lidocaína', 'Digoxina', 'Adrenalina', 'Atropina'], correctAnswer: 1, explanation: 'La digoxina aumenta el tono vagal y enlentece la conducción AV, pudiendo causar bloqueo variable en pacientes con aleteo auricular.'},
-        { question: '¿Cuál es el riesgo de un bloqueo 1:1 en aleteo?', options: ['Bradicardia severa', 'Respuesta ventricular muy rápida (~300 lpm) que causa inestabilidad', 'Asistolia', 'No tiene riesgos'], correctAnswer: 1, explanation: 'Si el bloqueo AV pasa a 1:1, la frecuencia ventricular seráa de ~300 lpm, lo que es hemodinámicamente muy mal tolerado y puede degenerar en FV.'},
-    ],
-    generateECGData: (duration) => {
-        let data: Record<string, ECGPoint[]> = Object.fromEntries(Object.keys(LEAD_ANGLES).concat(['V1','V2','V3','V4','V5','V6']).map(l => [l, []]));
-        const atrialRate = 300;
-        const atrialInterval = 60 / atrialRate;
-        const flutterVector: Vector = { magnitude: 0.5, angle: 90, duration: atrialInterval, points: [[0,0],[0.25,-0.3],[0.5,-1],[0.75,-0.5],[1,0]]};
+                 const flutterWaveMagnitude = (lead === 'DII' || lead === 'DIII' || lead === 'aVF') ? 0.35 : 0.12;
 
-        for(let time = 0; time < duration; time += atrialInterval) {
-            Object.keys(LEAD_ANGLES).forEach(lead => {
-                 const leadAngle = LEAD_ANGLES[lead];
-                 const projection = Math.cos((flutterVector.angle - leadAngle) * Math.PI / 180);
-                 const flutterWaveMagnitude = (lead === 'DII' || lead === 'DIII' || lead === 'aVF') ? 0.6 : 0.2;
                  data[lead].push(...generateComponent(time, atrialInterval, [[0,0],[0.25, 0.1 * flutterWaveMagnitude],[0.5, -flutterWaveMagnitude],[0.75, -0.3 * flutterWaveMagnitude],[1,0.05 * flutterWaveMagnitude]]));
+
             });
         }
 
@@ -834,25 +827,38 @@ export const arrhythmias: Arrhythmia[] = [
     id: 'vtach',
     name: 'Taquicardia Ventricular',
     category: ArrhythmiaCategory.VENTRICULARES,
-    description: 'Ritmo rápido (>100/min) de origen ventricular, con QRS ancho y regular.',
-    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '100 a 270 L/m', pWave: 'No visible', prInterval: 'No medible', qrs: 'Ancho (> 0,12s)', axis: 'Extremo/Indeterminado' },
+    description: 'Ritmo rápido (>100/min) de origen ventricular, con QRS ancho, regular y concordancia precordial negativa. Disociación AV visible como ondas P que marchan a través del QRS.',
+    criteria: { rhythm: 'Regular', rhythmAnalysis: 'Regular', rate: '100 a 270 L/m', pWave: 'P disociadas visibles (AV dissociation)', prInterval: 'No medible (disociación AV)', qrs: 'Ancho (> 0,12s), concordancia precordial negativa', axis: 'Extremo/Indeterminado (-90°)' },
     approximateBpm: 180,
     quiz: [
         { question: '¿Cuáles son los tres criterios clave para identificar una Taquicardia Ventricular?', options: ['FC < 60, QRS estrecho, ritmo irregular', 'FC > 100, QRS ancho, ritmo regular', 'FC 60-100, QRS estrecho, ondas P visibles', 'FC > 150, QRS estrecho, ritmo regular'], correctAnswer: 1, explanation: 'La TV se define clásicamente por ser una taquicardia de complejo ancho y regular.'},
         { question: 'La Taquicardia Ventricular sostenida es una emergencia médica porque puede:', options: ['Causar hipertensión severa', 'Progresar a un bloqueo AV', 'Degenerar en Fibrilación Ventricular', 'Ser asintomática'], correctAnswer: 2, explanation: 'La TV puede causar inestabilidad hemodinámica grave y es un precursor común de la Fibrilación Ventricular, que es un ritmo de paro cardíaco.'},
         { question: '¿Cuál es el tratamiento de elección para un paciente con TV y sin pulso?', options: ['Administrar atropina', 'Realizar un masaje carotídeo', 'Desfibrilación inmediata', 'Administrar adenosina'], correctAnswer: 2, explanation: 'La TV sin pulso se trata como un paro cardíaco. La intervención clave, junto con la RCP de alta calidad, es la desfibrilación lo antes posible.'},
+        { question: '¿Qué signo electrocardiográfico confirma el diagnóstico de TV vs. TSV con aberrancia?', options: ['PR corto', 'Disociación AV', 'Ondas T invertidas', 'QRS estrecho'], correctAnswer: 1, explanation: 'La presencia de disociación AV (ondas P visibles e independientes del QRS) es el signo más específico de TV.'},
     ],
     generateECGData: (duration) => {
         const bpm = 180;
         const interval = 60 / bpm;
+        const pRate = 75;
+        const pInterval = 60 / pRate;
         let data: Record<string, ECGPoint[]> = {};
+        let pTime = 0;
         for (let time = 0; time < duration; time += interval) {
-            const beat = create12LeadBeat(time, null, VT_QRS_VECTOR, VT_T_VECTOR);
+            const beat = create12LeadBeat(time, null, VT_QRS_VECTOR, VT_T_VECTOR, 0.16, 'vt');
             for(const lead in beat) {
                 if(!data[lead]) data[lead] = [];
                 data[lead].push(...beat[lead]);
             }
+            while (pTime < duration && pTime < time + interval) {
+                const pBeat = generatePWaveOnly(pTime, NORMAL_P_VECTOR);
+                for(const lead in pBeat) {
+                    if(!data[lead]) data[lead] = [];
+                    data[lead].push(...pBeat[lead]);
+                }
+                pTime += pInterval;
+            }
         }
+        for(const lead in data) data[lead].sort((a,b) => a.time - b.time);
         return data;
     },
   },

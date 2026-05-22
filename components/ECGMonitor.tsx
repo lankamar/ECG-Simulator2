@@ -164,6 +164,7 @@ interface ECGMonitorProps {
   isClassMode: boolean;
   setIsMeasMode: (v: boolean) => void;
   setIsClassMode: (v: boolean) => void;
+  title?: string;
 }
 
 const ECGMonitor: React.FC<ECGMonitorProps> = ({ 
@@ -181,6 +182,7 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
     isClassMode,
     setIsMeasMode,
     setIsClassMode,
+    title,
 }) => {
   
   const [measPoints, setMeasPoints] = useState<Record<string, MeasPoint[]>>({});

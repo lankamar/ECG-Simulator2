@@ -241,11 +241,11 @@ ECG-Simulator2/
 
 ### Fuente Conceptual Validadora
 
-**Libro:** [ECG: Interpretación Clínica - Jorge Cuenca](https://example.com)
+**Libro:** [ECG: Interpretación Clínica - Lic. Jorge Cuence](https://example.com)
 
-Este proyecto utiliza como **fuente conceptual validadora** el libro de Jorge Cuenca sobre interpretación clínica de electrocardiogramas. Los algoritmos, patrones de arritmias y criterios diagnósticos implementados en el simulador se basan en los principios y conceptos presentados en esta referencia bibliográfica.
+Este proyecto utiliza como **fuente conceptual validadora** el libro de Lic. Jorge Cuence sobre interpretación clínica de electrocardiogramas. Los algoritmos, patrones de arritmias y criterios diagnósticos implementados en el simulador se basan en los principios y conceptos presentados en esta referencia bibliográfica.
 
-**Nota Importante:** Jorge Cuenca es el autor del libro de referencia conceptual del proyecto. El diseño, desarrollo e implementación de este simulador es responsabilidad única de Marcelo Omar Lancry Kamycki.
+**Nota Importante:** Lic. Jorge Cuence es el autor del libro de referencia conceptual del proyecto. El diseño, desarrollo e implementación de este simulador es responsabilidad única de Marcelo Omar Lancry Kamycki.
 
 ---
 
@@ -267,7 +267,7 @@ Este proyecto de simulador de ECG es de autoría y desarrollo exclusivo de Marce
 ### Protección de Autoría
 
 - **Licencia:** [Especificar licencia - MIT, GPL, CC, etc.]
-- **Fuente Conceptual:** El contenido técnico se basa en el libro de Jorge Cuenca sobre interpretación clínica de electrocardiogramas
+- **Fuente Conceptual:** El contenido técnico se basa en el libro de Lic. Jorge Cuence sobre interpretación clínica de electrocardiogramas
 - **Autoría de Código:** 100% desarrollado por Marcelo Omar Lancry Kamycki
 - **GitHub Profile:** https://github.com/lankamar
 - **Commit History:** El historial de commits de GitHub registra automáticamente toda la autoría y cambios realizados

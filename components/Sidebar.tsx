@@ -146,9 +146,45 @@ const Sidebar: React.FC<SidebarProps> = ({ arrhythmias, selectedArrhythmia, onSe
           <p className="text-slate-500 text-sm text-center mt-8">Sin resultados</p>
         )}
       </nav>
-    <p className="text-[10px] sm:text-xs">Diseñador y Desarrollador: Marcelo Omar Lancry Kamycki (@lankamar).</p>
+    <StudentProgress arrhythmias={arrhythmias} />
+    <p className="text-[10px] sm:text-xs">Diseñador y Desarrollador: Marcelo Omar Lancry Kamycki.</p>
     <p className="text-[10px] sm:text-xs">© 2025 Marcelo Omar Lancry Kamycki.</p>
     </aside>
+  );
+};
+
+type ProgressRecord = { viewed: boolean; correct: number; total: number };
+
+const StudentProgress: React.FC<{ arrhythmias: Arrhythmia[] }> = ({ arrhythmias }) => {
+  const [progress, setProgress] = useState<Record<string, ProgressRecord>>({});
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem('ecg_simulator_progress') || '{}') as Record<string, ProgressRecord>;
+      setProgress(p);
+    } catch {}
+  }, []);
+  const viewed = Object.keys(progress).filter(id => progress[id]?.viewed).length;
+  const total = arrhythmias.length;
+  const records = Object.values(progress) as ProgressRecord[];
+  const allCorrect = records.reduce((sum, r) => sum + r.correct, 0);
+  const allTotal = records.reduce((sum, r) => sum + r.total, 0);
+  const pct = allTotal > 0 ? Math.round(allCorrect / allTotal * 100) : 0;
+  return (
+    <div className="mt-2 mb-2 p-2 bg-slate-700/30 rounded-lg text-xs">
+      <div className="flex justify-between text-slate-400 mb-1">
+        <span>Progreso</span>
+        <span>{viewed}/{total} vistas</span>
+      </div>
+      <div className="w-full bg-slate-600 rounded-full h-1.5 mb-1">
+        <div className="h-1.5 rounded-full bg-cyan-500" style={{width: `${viewed/total*100}%`}}></div>
+      </div>
+      {allTotal > 0 && (
+        <div className="flex justify-between text-slate-500">
+          <span>Quiz: {allCorrect}/{allTotal}</span>
+          <span className={pct >= 70 ? 'text-green-400' : pct >= 40 ? 'text-yellow-400' : 'text-red-400'}>{pct}%</span>
+        </div>
+      )}
+    </div>
   );
 };
 

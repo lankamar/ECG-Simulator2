@@ -15,6 +15,14 @@ export enum ArrhythmiaCategory {
   VENTRICULARES = "Ventriculares",
 }
 
+export interface InterpretationStep {
+  step: number;
+  title: string;
+  finding: string;
+  normal: string;
+  pathological: string;
+}
+
 export interface Arrhythmia {
   id: string;
   name: string;
@@ -29,6 +37,7 @@ export interface Arrhythmia {
     qrs: string;
     axis?: string;
   };
+  interpretationSteps?: InterpretationStep[];
   quiz: QuizQuestion[];
   generateECGData: (durationSeconds: number) => Record<string, ECGPoint[]>;
   clinicalSignificance?: string;

@@ -19,10 +19,15 @@ const App: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMeasMode, setIsMeasMode] = useState(false);
   const [isClassMode, setIsClassMode] = useState(false);
+  const [compareWithNSR, setCompareWithNSR] = useState(false);
 
+  const nsrArrhythmia = useMemo(() => arrhythmias.find(a => a.id === 'nsr')!, []);
   const ecgData = useMemo(() => {
-    return selectedArrhythmia.generateECGData(20); // Generate 20 seconds of data
+    return selectedArrhythmia.generateECGData(20);
   }, [selectedArrhythmia]);
+  const nsrEcgData = useMemo(() => {
+    return compareWithNSR ? nsrArrhythmia.generateECGData(20) : null;
+  }, [compareWithNSR, nsrArrhythmia]);
   
   const TOTAL_DURATION = ecgData['DI']?.length > 0 ? ecgData['DI'][ecgData['DI'].length - 1].time : 0;
   const MONITOR_WINDOW_SECONDS = 3;
@@ -84,34 +89,80 @@ const App: React.FC = () => {
       </div>
       <main className="flex-grow p-2 sm:p-4 md:p-8 grid grid-cols-1 gap-4 sm:gap-8 overflow-y-auto pt-16 sm:pt-4 md:pt-8">
         <div className="flex flex-col min-h-0">
-          <h2 className="text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 text-slate-100 flex-shrink-0">{selectedArrhythmia.name}</h2>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-2 sm:mb-4 flex-shrink-0">
+            <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-100">{selectedArrhythmia.name}</h2>
+            <button
+              onClick={() => setCompareWithNSR(!compareWithNSR)}
+              className={`px-3 py-1 text-xs sm:text-sm rounded-lg font-semibold border transition-all ${
+                compareWithNSR ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300' : 'bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-400'
+              }`}
+            >
+              {compareWithNSR ? 'Comparando con NSR' : 'Comparar con NSR'}
+            </button>
+          </div>
           
-            <div className="flex-grow mb-6 min-h-[400px]">
-            <ECGMonitor 
-              data={ecgData} 
-              heartRate={selectedArrhythmia.criteria.rate}
-              approximateBpm={selectedArrhythmia.approximateBpm}
-              timeOffset={timeOffset}
-              windowSeconds={MONITOR_WINDOW_SECONDS}
-              isPlaying={isPlaying}
-              playbackSpeed={playbackSpeed}
-              setIsPlaying={setIsPlaying}
-              setPlaybackSpeed={setPlaybackSpeed}
-              onZoomLead={handleZoomLead}
-              isMeasMode={isMeasMode}
-              isClassMode={isClassMode}
-              setIsMeasMode={setIsMeasMode}
-              setIsClassMode={setIsClassMode}
-            />
+          <div className={`grid ${compareWithNSR ? 'grid-cols-1 lg:grid-cols-2 gap-2' : ''}`}>
+            <div className="flex-grow mb-4 min-h-[300px]">
+              <ECGMonitor 
+                data={ecgData} 
+                heartRate={selectedArrhythmia.criteria.rate}
+                approximateBpm={selectedArrhythmia.approximateBpm}
+                timeOffset={timeOffset}
+                windowSeconds={MONITOR_WINDOW_SECONDS}
+                isPlaying={isPlaying}
+                playbackSpeed={playbackSpeed}
+                setIsPlaying={setIsPlaying}
+                setPlaybackSpeed={setPlaybackSpeed}
+                onZoomLead={handleZoomLead}
+                isMeasMode={isMeasMode}
+                isClassMode={isClassMode}
+                setIsMeasMode={setIsMeasMode}
+                setIsClassMode={setIsClassMode}
+              />
+            </div>
+            {compareWithNSR && nsrEcgData && (
+              <div className="flex-grow mb-4 min-h-[300px]">
+                <ECGMonitor 
+                  data={nsrEcgData} 
+                  heartRate={nsrArrhythmia.criteria.rate}
+                  approximateBpm={nsrArrhythmia.approximateBpm}
+                  timeOffset={timeOffset}
+                  windowSeconds={MONITOR_WINDOW_SECONDS}
+                  isPlaying={isPlaying}
+                  playbackSpeed={playbackSpeed}
+                  setIsPlaying={setIsPlaying}
+                  setPlaybackSpeed={setPlaybackSpeed}
+                  onZoomLead={handleZoomLead}
+                  isMeasMode={isMeasMode}
+                  isClassMode={isClassMode}
+                  setIsMeasMode={setIsMeasMode}
+                  setIsClassMode={setIsClassMode}
+                />
+              </div>
+            )}
           </div>
 
-          <div className="mb-8">
-            <RhythmStrip
-              data={ecgData['DII'] || []}
-              timeOffset={timeOffset}
-              windowSeconds={RHYTHM_STRIP_WINDOW_SECONDS}
-              isMeasMode={isMeasMode}
-            />
+          <div className={`grid ${compareWithNSR ? 'grid-cols-1 lg:grid-cols-2 gap-2' : ''} mb-6`}>
+            <div>
+              <RhythmStrip
+                data={ecgData['DII'] || []}
+                timeOffset={timeOffset}
+                windowSeconds={RHYTHM_STRIP_WINDOW_SECONDS}
+                isMeasMode={isMeasMode}
+                title={compareWithNSR ? selectedArrhythmia.name : undefined}
+              />
+            </div>
+            {compareWithNSR && nsrEcgData && (
+              <div>
+                <RhythmStrip
+                  data={nsrEcgData['DII'] || []}
+                  timeOffset={timeOffset}
+                  windowSeconds={RHYTHM_STRIP_WINDOW_SECONDS}
+                  isMeasMode={isMeasMode}
+                  title="NSR (referencia)"
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex-shrink-0">
