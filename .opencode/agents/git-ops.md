@@ -50,12 +50,17 @@ Reglas:
 - Verificar que `origin/main` esté actualizado antes de push
 - `git push origin main`
 
-### GitHub Actions
+## Conocimiento Validado
 
-Workflow de CI:
+### GitHub Actions (best practices 2026)
 ```yaml
-name: Build
-on: [push, pull_request]
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -64,23 +69,54 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'        # cache automático de node_modules
       - run: npm install
       - run: npx vite build
+      - name: Check encoding UTF-8
+        run: |
+          if grep -rnP '\x{FFFD}' --include='*.ts' --include='*.tsx' .; then
+            echo "ERROR: Found U+FFFD replacement characters"
+            exit 1
+          fi
+          echo "Encoding OK — 0 U+FFFD"
 ```
+- `actions/checkout@v4` es la versión actual estable
+- `actions/setup-node@v4` con `cache: 'npm'` (nuevo en v4, acelera build)
+- Node 20 es la versión LTS recomendada
+- `npm install` (no `npm ci`) porque queremos flexibilidad de versiones
+- Encoding check con grep -P (PCRE)
 
-Workflow de deploy (Vercel):
-- No necesario si Vercel auto-deploy desde main está configurado
-- Si se agrega, usar `vercel/deploy@v2`
+### Workflow de deploy (Vercel)
+- No necesario: Vercel auto-deploy desde main ya está configurado
+- El proyecto está conectado a GitHub → push a main → deploy automático
+- URL: https://ecg-simulator2.vercel.app
 
 ### Pre-commit checks
 Antes de cada commit, git-ops DEBE:
 1. Verificar que qa-verifier aprobó el build
-2. Verificar `git status` (solo archivos esperados)
-3. Verificar `git diff` (solo cambios intencionados)
-4. NO commitea si hay warnings de encoding
+2. Verificar `git status` — solo archivos esperados
+3. Verificar `git diff` — solo cambios intencionados
+4. Verificar `git log --oneline -3` para contexto
+5. NO commitea si hay errores de encoding
+6. NO stage archivos con `git add .` — siempre `git add <specific_file>`
+7. NO amend, NO force push, NO commit vacío
+
+### Commit Message Format
+```
+<tipo>: <descripción>
+
+Cuerpo opcional (72 chars máx)
+```
+Tipos: `Fix:`, `Feat:`, `Refactor:`, `Docs:`, `CI:`
+
+### Reglas de seguridad
+- Nunca comitear .env, API keys, tokens
+- Verificar que `package-lock.json` esté actualizado si cambian dependencias
+- Si hay archivos grandes o binarios, agregarlos a .gitignore primero
 
 ## Verificación
 1. `git log --oneline` muestra mensajes coherentes
-2. GitHub Actions pasa (green check)
+2. GitHub Actions pasa (green check) — CI corre build + encoding check
 3. Vercel deploy automático desde main
 4. No hay commits duplicados o mensajes vacíos
+5. `git status` limpio después del push

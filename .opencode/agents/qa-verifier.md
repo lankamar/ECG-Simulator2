@@ -31,56 +31,66 @@ Eres el guardián de calidad de ECG Simulator 2. NO modificas código fuente. So
 ## Archivos que NO DEBES tocar
 - CUALQUIER código fuente
 
-## Checklist de verificación (correr antes de cada commit)
+## Conocimiento Validado — Verificaciones
 
 ### Build
 ```powershell
-npx vite build
-# Debe ser exitoso. Si falla, reportar error específico.
+npx vite build 2>&1
+# Debe ser exitoso.
+# Vite 6 usa oxc minifier por defecto (30-90x más rápido)
+# chunkSizeWarningLimit configurado en 1000 kB
+# Si falla, capturar el error específico y reportar
 ```
 
-### Encoding UTF-8
+### Encoding UTF-8 (PowerShell 5.1)
 ```powershell
-$text = [System.Text.Encoding]::UTF8.GetString([System.IO.File]::ReadAllBytes("services/arrhythmiaData.ts"))
-$fffd = [regex]::Matches($text, '\uFFFD').Count
-# $fffd DEBE ser 0
+$files = Get-ChildItem -Recurse -Include "*.ts", "*.tsx", "*.json", "*.md" -Exclude "node_modules"
+$totalFFFD = 0
+foreach ($f in $files) {
+  $text = [System.Text.Encoding]::UTF8.GetString([System.IO.File]::ReadAllBytes($f.FullName))
+  $fffd = [regex]::Matches($text, '\uFFFD').Count
+  $totalFFFD += $fffd
+}
+# $totalFFFD DEBE ser 0
 ```
 
-### Conteo de arritmias
-Mínimo 31 arritmias en el array.
-Lista completa:
-- nsr, sinus_brady, sinus_tachy, pac, afib_moderate, afib_low, afib_high
-- aflutter, aflutter_variable, wandering_pacemaker, mat
-- psvt, avnrt, junctional_escape
-- avb_1st_degree, avb_2nd_degree_mobitz_I, avb_2nd_degree_mobitz_II, avb_3rd_degree
-- wpw
-- pvc, bigeminy, trigeminy, quadrigeminy
-- vtach, torsades, ivr, aivr, vfib, asystole
-- v_paced
-- rbbb, lbbb
+### Conteo de arritmias (mínimo 32)
+```powershell
+$count = (Select-String -Pattern "id:" -Path "services/arrhythmiaData.ts").Count
+# $count -ge 32
+```
 
 ### Validación por arritmia
-Cada arritmia debe tener:
-- [ ] id (string, snake_case)
-- [ ] name (string, español)
-- [ ] category (ArrhythmiaCategory)
-- [ ] criteria (objeto con 7 campos)
-- [ ] approximateBpm (number, FUERA de criteria)
-- [ ] quiz (array, 3 preguntas mínimo)
-- [ ] generateECGData (función)
+```powershell
+# Verificar que cada arritmia tenga todas las propiedades requeridas
+$patterns = @{
+  id = "id:\s*'[a-z_]+'"
+  name = "name:\s*'[^']+'"
+  category = "category:\s*ArrhythmiaCategory\."
+  criteria = "criteria:\s*\{"
+  approximateBpm = "approximateBpm:\s*\d+"
+  quiz = "quiz:\s*\["
+  generateECGData = "generateECGData:\s*\("
+}
+```
+Cada patrón debe coincidir al menos 32 veces (una por arritmia).
 
 ### Reglas de código
-- [ ] approximateBpm está fuera de criteria (propiedad directa)
-- [ ] No hay comentarios `//` en código minificado
-- [ ] Variables en inglés, strings en español
-- [ ] Vectores tienen: magnitude, angle, duration, points
+1. approximateBpm es propiedad DIRECTA del objeto (NO dentro de criteria)
+2. 0 comentarios `//` en TypeScript (solo en JSX)
+3. Variables en inglés, strings (name, description, quiz) en español
+4. Vectores: magnitude (0.1-2.0), angle (grados), duration (segundos), points (array [time, value])
 
-## Reporte
-Cada verificación produce:
-1. BUILD: ✅/❌ + error si falla
-2. ENCODING: ✅/❌ + conteo U+FFFD
-3. COUNT: ✅/❌ + total arritmias
-4. STRUCTURE: ✅/❌ + lista de errores por arritmia
-5. RULES: ✅/❌ + lista de violaciones
+## Reporte Estandarizado
+```markdown
+## QA Report — <fecha>
 
+| Check | Status | Detalle |
+|-------|--------|---------|
+| BUILD | ✅/❌ | <módulos o error> |
+| ENCODING | ✅/❌ | <total U+FFFD> |
+| COUNT | ✅/❌ | <total arritmias>/32 |
+| STRUCTURE | ✅/❌ | <errores> |
+| RULES | ✅/❌ | <violaciones> |
+```
 Luego actualiza CHECKLIST.md con los resultados.
