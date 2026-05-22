@@ -242,11 +242,12 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
                 </div>
                 <button
                   onClick={() => { setIsMeasMode(m => !m); if (isMeasMode) setMeasPoints({}); }}
-                  className={`p-1.5 rounded text-xs transition-colors ${isMeasMode ? 'bg-amber-500 text-black' : 'bg-slate-700 text-green-400 hover:bg-slate-600'}`}
+                  className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-bold transition-colors ${isMeasMode ? 'bg-amber-500 text-black ring-2 ring-amber-300' : 'bg-slate-700 text-green-400 hover:bg-slate-600'}`}
                   aria-label="Medir"
                   title="Medir (BPM / mV)"
                 >
                   <MeasIcon className="w-4 h-4" />
+                  {isMeasMode ? 'MEDIR' : 'MEDIR'}
                 </button>
                 <button
                   onClick={() => setIsClassMode(m => !m)}
