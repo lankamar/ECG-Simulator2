@@ -42,7 +42,7 @@ const MiniLeadChart: React.FC<{ data: ECGPoint[], timeOffset: number, window: nu
 
     return (
         <div className="w-full h-full relative">
-            <span className="absolute top-1 left-2 text-green-400 font-mono text-xs z-10">{leadName}</span>
+            <span className="absolute top-0.5 left-1 sm:top-1 sm:left-2 text-green-400 font-mono text-[10px] sm:text-xs z-10">{leadName}</span>
              <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
                     <CartesianGrid {...gridProps} horizontalCoordinatesGenerator={(props) => Array.from({length: 11}, (_, i) => (props.offset.top || 0) + i * 10)} verticalCoordinatesGenerator={(props) => Array.from({length: 51}, (_, i) => (props.offset.left || 0) + i * 10)} />
@@ -120,13 +120,13 @@ const ECGMonitor: React.FC<ECGMonitorProps> = ({
             </div>
             <div className="text-right">
                 <span className="text-xs sm:text-sm block text-gray-400">Latidos</span>
-                <span className="text-2xl sm:text-4xl font-bold text-green-300">{heartRateValue}</span>
+                <span className="text-xl sm:text-2xl md:text-4xl font-bold text-green-300">{heartRateValue}</span>
             </div>
         </div>
 
-      <div className="flex-grow w-full grid grid-cols-4 gap-1">
+      <div className="flex-grow w-full grid grid-cols-2 sm:grid-cols-4 gap-0.5 sm:gap-1">
         {leadOrder.flat().map(leadName => (
-            <div key={leadName} className="relative h-20 sm:h-24 bg-black border border-slate-800 rounded group">
+            <div key={leadName} className="relative h-16 sm:h-20 md:h-24 bg-black border border-slate-800 rounded group">
                 <MiniLeadChart 
                     data={data[leadName] || []}
                     timeOffset={timeOffset}

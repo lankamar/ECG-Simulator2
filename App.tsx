@@ -16,6 +16,7 @@ const App: React.FC = () => {
 
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
   const [zoomedLeads, setZoomedLeads] = useState<string[]>(['DII']);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const ecgData = useMemo(() => {
     return selectedArrhythmia.generateECGData(20); // Generate 20 seconds of data
@@ -58,15 +59,30 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-900 font-sans">
-      <Sidebar 
-        arrhythmias={arrhythmias} 
-        selectedArrhythmia={selectedArrhythmia} 
-        onSelectArrhythmia={handleSelectArrhythmia} 
-      />
-      <main className="flex-grow p-4 md:p-8 grid grid-cols-1 gap-8 overflow-y-auto">
+    <div className="flex h-screen bg-slate-900 font-sans overflow-hidden">
+      <button
+        onClick={() => setIsMobileMenuOpen(true)}
+        className="fixed top-4 left-4 z-50 sm:hidden bg-slate-800 p-2 rounded-lg shadow-lg border border-slate-700"
+        aria-label="Abrir menú"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <div className={`fixed inset-0 z-40 bg-black/50 sm:hidden transition-opacity ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={() => setIsMobileMenuOpen(false)} />
+
+      <div className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 sm:static sm:transform-none sm:z-auto ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <Sidebar 
+          arrhythmias={arrhythmias} 
+          selectedArrhythmia={selectedArrhythmia} 
+          onSelectArrhythmia={(a) => { handleSelectArrhythmia(a); setIsMobileMenuOpen(false); }}
+          onCloseMobile={() => setIsMobileMenuOpen(false)}
+        />
+      </div>
+      <main className="flex-grow p-2 sm:p-4 md:p-8 grid grid-cols-1 gap-4 sm:gap-8 overflow-y-auto pt-16 sm:pt-4 md:pt-8">
         <div className="flex flex-col min-h-0">
-          <h2 className="text-3xl font-bold mb-4 text-slate-100 flex-shrink-0">{selectedArrhythmia.name}</h2>
+          <h2 className="text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 text-slate-100 flex-shrink-0">{selectedArrhythmia.name}</h2>
           
           <div className="flex-grow mb-6 min-h-[400px]">
             <ECGMonitor 

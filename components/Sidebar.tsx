@@ -6,6 +6,7 @@ interface SidebarProps {
   arrhythmias: Arrhythmia[];
   selectedArrhythmia: Arrhythmia;
   onSelectArrhythmia: (arrhythmia: Arrhythmia) => void;
+  onCloseMobile?: () => void;
 }
 
 const groupArrhythmias = (arrhythmias: Arrhythmia[]) => {
@@ -21,7 +22,7 @@ const groupArrhythmias = (arrhythmias: Arrhythmia[]) => {
 
 type CategoryFilter = 'all' | ArrhythmiaCategory;
 
-const Sidebar: React.FC<SidebarProps> = ({ arrhythmias, selectedArrhythmia, onSelectArrhythmia }) => {
+const Sidebar: React.FC<SidebarProps> = ({ arrhythmias, selectedArrhythmia, onSelectArrhythmia, onCloseMobile }) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
@@ -66,10 +67,19 @@ const Sidebar: React.FC<SidebarProps> = ({ arrhythmias, selectedArrhythmia, onSe
 
   return (
     <aside className="w-72 bg-slate-800 p-4 flex flex-col flex-shrink-0">
-      <h1 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center">
-        <HeartIcon className="w-8 h-8 mr-2 text-red-500" />
-        ECG Simulator
-      </h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold text-cyan-400 flex items-center">
+          <HeartIcon className="w-8 h-8 mr-2 text-red-500" />
+          ECG Simulator
+        </h1>
+        {onCloseMobile && (
+          <button onClick={onCloseMobile} className="sm:hidden p-1 text-slate-400 hover:text-white" aria-label="Cerrar menú">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
 
       <div className="relative mb-3">
         <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
@@ -136,8 +146,8 @@ const Sidebar: React.FC<SidebarProps> = ({ arrhythmias, selectedArrhythmia, onSe
           <p className="text-slate-500 text-sm text-center mt-8">Sin resultados</p>
         )}
       </nav>
-    <p className="text-xs">Diseñador y Desarrollador: Marcelo Omar Lancry Kamycki (@lankamar).</p>
-    <p className="text-xs">© 2025 Marcelo Omar Lancry Kamycki.</p>
+    <p className="text-[10px] sm:text-xs">Diseñador y Desarrollador: Marcelo Omar Lancry Kamycki (@lankamar).</p>
+    <p className="text-[10px] sm:text-xs">© 2025 Marcelo Omar Lancry Kamycki.</p>
     </aside>
   );
 };
