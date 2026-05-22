@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npx vite build
+      - name: Check encoding UTF-8
+        run: |
+          if grep -rnP '\x{FFFD}' --include='*.ts' --include='*.tsx' --include='*.json' .; then
+            echo "ERROR: Found U+FFFD replacement characters"
+            exit 1
+          fi
+          echo "Encoding OK — 0 U+FFFD"
