@@ -36,6 +36,23 @@ const MeasIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
+const dataToSvg = (container: HTMLDivElement, p: MeasPoint, timeOffset: number, windowSec: number, yMin: number, yMax: number, marginT: number, marginR: number, marginL: number, marginB: number) => {
+  const w = container.offsetWidth;
+  const h = container.offsetHeight;
+  const chartW = w - marginL - marginR;
+  const chartH = h - marginT - marginB;
+  return {
+    sx: marginL + ((p.x - timeOffset) / windowSec) * chartW,
+    sy: marginT + ((yMax - p.y) / (yMax - yMin)) * chartH,
+  };
+};
+
+const measDirection = (dx: number, dy: number): 'h' | 'v' | 'both' => {
+  if (dx > dy * 1.5) return 'h';
+  if (dy > dx * 1.5) return 'v';
+  return 'both';
+};
+
 const MeasurableLeadChart: React.FC<{
   data: ECGPoint[]; timeOffset: number; window: number; leadName: string;
   measMode: boolean; measPoints: MeasPoint[]; onAddPoint: (lead: string, p: MeasPoint) => void;
@@ -45,70 +62,77 @@ const MeasurableLeadChart: React.FC<{
 
     const gridProps = { stroke: "#1a533b", strokeWidth: 0.5 };
     const majorGridProps = { ...gridProps, stroke: "#3e886d" };
+    const yMin = -1.2;
+    const yMax = 1.2;
+    const margin = { t: 10, r: 0, l: 0, b: 0 };
 
     const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
       if (!measMode || !containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const marginTop = 10;
-      const chartH = rect.height - marginTop;
-      const chartW = rect.width;
-      const relX = (e.clientX - rect.left) / chartW;
-      const relY = (e.clientY - rect.top - marginTop) / chartH;
+      const chartW = rect.width - margin.l - margin.r;
+      const chartH = rect.height - margin.t - margin.b;
+      const relX = (e.clientX - rect.left - margin.l) / chartW;
+      const relY = (e.clientY - rect.top - margin.t) / chartH;
       const x = timeOffset + relX * window;
-      const y = 1.2 - relY * 2.4;
+      const y = yMax - relY * (yMax - yMin);
       onAddPoint(leadName, { x, y });
     }, [measMode, timeOffset, window, leadName, onAddPoint]);
 
     const m = measPoints.length === 2 ? measPoints : null;
-    const timeDiff = m ? Math.abs(m[1].x - m[0].x) : 0;
-    const ampDiff = m ? Math.abs(m[1].y - m[0].y) : 0;
-    const bpm = timeDiff > 0 ? Math.round(60 / timeDiff) : 0;
+    const dx = m ? Math.abs(m[1].x - m[0].x) : 0;
+    const dy = m ? Math.abs(m[1].y - m[0].y) : 0;
+    const dir = m ? measDirection(dx, dy) : null;
+    const timeDiff = dx;
+    const ampDiff = dy;
+    const bpm = dx > 0 ? Math.round(60 / dx) : 0;
+
+    const toSvg = (p: MeasPoint) => {
+      if (!containerRef.current) return { sx: 0, sy: 0 };
+      return dataToSvg(containerRef.current, p, timeOffset, window, yMin, yMax, margin.t, margin.r, margin.l, margin.b);
+    };
 
     return (
       <div ref={containerRef} className="w-full h-full relative" onClick={handleClick} style={{ cursor: measMode ? 'crosshair' : 'default' }}>
         <span className="absolute top-0.5 left-1 sm:top-1 sm:left-2 text-green-400 font-mono text-[10px] sm:text-xs z-10">{leadName}</span>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+          <LineChart data={data} margin={margin}>
             <CartesianGrid {...gridProps} horizontalCoordinatesGenerator={(props) => Array.from({length: 11}, (_, i) => (props.offset.top || 0) + i * 10)} verticalCoordinatesGenerator={(props) => Array.from({length: 51}, (_, i) => (props.offset.left || 0) + i * 10)} />
             <CartesianGrid {...majorGridProps} horizontalCoordinatesGenerator={(props) => Array.from({length: 3}, (_, i) => (props.offset.top || 0) + i * 50)} verticalCoordinatesGenerator={(props) => Array.from({length: 11}, (_, i) => (props.offset.left || 0) + i * 50)} />
             <XAxis type="number" dataKey="time" domain={[timeOffset, timeOffset + window]} hide={true} allowDataOverflow={true} />
-            <YAxis domain={[-1.2, 1.2]} hide={true} />
+            <YAxis domain={[yMin, yMax]} hide={true} />
             <Line type="monotone" dataKey="value" stroke="#00ff00" strokeWidth={1.5} dot={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
         {measPoints.length >= 1 && measMode && (
           <svg className="absolute inset-0 pointer-events-none z-20">
             {measPoints.map((p, i) => {
-              const rect = containerRef.current?.getBoundingClientRect();
-              if (!rect) return null;
-              const marginTop = 10;
-              const chartH = rect.height - marginTop;
-              const chartW = rect.width;
-              const sx = ((p.x - timeOffset) / window) * chartW;
-              const sy = marginTop + ((1.2 - p.y) / 2.4) * chartH;
+              const { sx, sy } = toSvg(p);
               return <circle key={i} cx={sx} cy={sy} r={4} fill={i === 0 ? '#ff0' : '#0ff'} />;
             })}
             {m && (() => {
-              const rect = containerRef.current?.getBoundingClientRect();
-              if (!rect) return null;
-              const marginTop = 10;
-              const chartH = rect.height - marginTop;
-              const chartW = rect.width;
-              const sx1 = ((m[0].x - timeOffset) / window) * chartW;
-              const sy1 = marginTop + ((1.2 - m[0].y) / 2.4) * chartH;
-              const sx2 = ((m[1].x - timeOffset) / window) * chartW;
-              const sy2 = marginTop + ((1.2 - m[1].y) / 2.4) * chartH;
+              const p1 = toSvg(m[0]);
+              const p2 = toSvg(m[1]);
+              const midX = (p1.sx + p2.sx) / 2;
+              const midY = (p1.sy + p2.sy) / 2;
               return (
                 <>
-                  <line x1={sx1} y1={sy1} x2={sx2} y2={sy2} stroke="#fff" strokeWidth={1} strokeDasharray="4 2" />
-                  <line x1={sx1} y1={sy1} x2={sx2} y2={sy1} stroke="#ff0" strokeWidth={0.5} strokeDasharray="2 2" />
-                  <line x1={sx2} y1={sy2} x2={sx2} y2={sy1} stroke="#0ff" strokeWidth={0.5} strokeDasharray="2 2" />
-                  <text x={(sx1 + sx2) / 2} y={sy1 - 6} fill="#ff0" fontSize={9} textAnchor="middle">
-                    {timeDiff.toFixed(2)}s | {bpm} BPM
-                  </text>
-                  <text x={sx2 + 6} y={(sy1 + sy2) / 2} fill="#0ff" fontSize={9} textAnchor="start" dominantBaseline="middle">
-                    {ampDiff.toFixed(2)}mV
-                  </text>
+                  <line x1={p1.sx} y1={p1.sy} x2={p2.sx} y2={p2.sy} stroke="#fff" strokeWidth={1} strokeDasharray="4 2" />
+                  {(dir === 'h' || dir === 'both') && (
+                    <>
+                      <line x1={p1.sx} y1={p1.sy} x2={p2.sx} y2={p1.sy} stroke="#ff0" strokeWidth={1} />
+                      <text x={midX} y={p1.sy - 8} fill="#ff0" fontSize={dir === 'h' ? 11 : 8} textAnchor="middle">
+                        {dir === 'h' ? `${bpm} BPM (${timeDiff.toFixed(2)}s)` : `${timeDiff.toFixed(2)}s`}
+                      </text>
+                    </>
+                  )}
+                  {(dir === 'v' || dir === 'both') && (
+                    <>
+                      <line x1={p2.sx} y1={p2.sy} x2={p2.sx} y2={p1.sy} stroke="#0ff" strokeWidth={1} />
+                      <text x={p2.sx + 6} y={midY} fill="#0ff" fontSize={dir === 'v' ? 11 : 8} textAnchor="start" dominantBaseline="middle">
+                        {ampDiff.toFixed(2)} mV
+                      </text>
+                    </>
+                  )}
                 </>
               );
             })()}

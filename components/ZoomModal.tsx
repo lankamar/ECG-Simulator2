@@ -14,6 +14,23 @@ interface ZoomModalProps {
   isMeasMode?: boolean;
 }
 
+const dataToSvg = (container: HTMLElement, p: MeasPoint, timeOffset: number, windowSec: number, yMin: number, yMax: number, marginT: number, marginR: number, marginL: number, marginB: number) => {
+  const w = container.offsetWidth;
+  const h = container.offsetHeight;
+  const chartW = w - marginL - marginR;
+  const chartH = h - marginT - marginB;
+  return {
+    sx: marginL + ((p.x - timeOffset) / windowSec) * chartW,
+    sy: marginT + ((yMax - p.y) / (yMax - yMin)) * chartH,
+  };
+};
+
+const measDirection = (dx: number, dy: number): 'h' | 'v' | 'both' => {
+  if (dx > dy * 1.5) return 'h';
+  if (dy > dx * 1.5) return 'v';
+  return 'both';
+};
+
 const DetailedLeadChart: React.FC<{
   data: ECGPoint[];
   leadName: string;
@@ -25,36 +42,33 @@ const DetailedLeadChart: React.FC<{
   onClear: () => void;
 }> = ({ data, leadName, timeOffset, windowSeconds, measMode, measPoints, onAddPoint, onClear }) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const yMin = -1.5;
+    const yMax = 1.5;
+    const margin = { t: 10, r: 10, l: 0, b: 5 };
 
     const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
       if (!measMode || !containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const marginTop = 10;
-      const marginLeft = 0;
-      const chartH = rect.height - marginTop - 5;
-      const chartW = rect.width - marginLeft - 10;
-      const relX = (e.clientX - rect.left - marginLeft) / chartW;
-      const relY = (e.clientY - rect.top - marginTop) / chartH;
+      const chartW = rect.width - margin.l - margin.r;
+      const chartH = rect.height - margin.t - margin.b;
+      const relX = (e.clientX - rect.left - margin.l) / chartW;
+      const relY = (e.clientY - rect.top - margin.t) / chartH;
       const x = timeOffset + relX * windowSeconds;
-      const y = 1.5 - relY * 3;
+      const y = yMax - relY * (yMax - yMin);
       onAddPoint({ x, y });
     }, [measMode, timeOffset, windowSeconds, onAddPoint]);
 
     const m = measPoints.length === 2 ? measPoints : null;
-    const timeDiff = m ? Math.abs(m[1].x - m[0].x) : 0;
-    const ampDiff = m ? Math.abs(m[1].y - m[0].y) : 0;
-    const bpm = timeDiff > 0 ? Math.round(60 / timeDiff) : 0;
+    const dx = m ? Math.abs(m[1].x - m[0].x) : 0;
+    const dy = m ? Math.abs(m[1].y - m[0].y) : 0;
+    const dir = m ? measDirection(dx, dy) : null;
+    const timeDiff = dx;
+    const ampDiff = dy;
+    const bpm = dx > 0 ? Math.round(60 / dx) : 0;
 
     const toSvg = (p: MeasPoint) => {
       if (!containerRef.current) return { sx: 0, sy: 0 };
-      const marginTop = 10;
-      const marginLeft = 0;
-      const chartH = containerRef.current.offsetHeight - marginTop - 5;
-      const chartW = containerRef.current.offsetWidth - marginLeft - 10;
-      return {
-        sx: marginLeft + ((p.x - timeOffset) / windowSeconds) * chartW,
-        sy: marginTop + ((1.5 - p.y) / 3) * chartH,
-      };
+      return dataToSvg(containerRef.current, p, timeOffset, windowSeconds, yMin, yMax, margin.t, margin.r, margin.l, margin.b);
     };
 
     return (
@@ -71,9 +85,9 @@ const DetailedLeadChart: React.FC<{
         }} onClick={handleClick}>
             <span className="absolute top-1 left-2 text-black font-bold text-sm z-10">{leadName}</span>
             <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
+                <LineChart data={data} margin={margin}>
                     <XAxis type="number" dataKey="time" domain={[timeOffset, timeOffset + windowSeconds]} hide={true} allowDataOverflow={true} />
-                    <YAxis domain={[-1.5, 1.5]} hide={true} allowDataOverflow={true} />
+                    <YAxis domain={[yMin, yMax]} hide={true} allowDataOverflow={true} />
                     <Line type="monotone" dataKey="value" stroke="#000000" strokeWidth={2} dot={false} isAnimationActive={false} />
                 </LineChart>
             </ResponsiveContainer>
@@ -86,17 +100,29 @@ const DetailedLeadChart: React.FC<{
                 {m && (() => {
                   const p1 = toSvg(m[0]);
                   const p2 = toSvg(m[1]);
+                  const midX = (p1.sx + p2.sx) / 2;
+                  const midY = (p1.sy + p2.sy) / 2;
+                  const topY = Math.min(p1.sy, p2.sy);
+                  const rightX = Math.max(p1.sx, p2.sx);
                   return (
                     <>
                       <line x1={p1.sx} y1={p1.sy} x2={p2.sx} y2={p2.sy} stroke="#333" strokeWidth={1} strokeDasharray="4 2" />
-                      <line x1={p1.sx} y1={p1.sy} x2={p2.sx} y2={p1.sy} stroke="#eab308" strokeWidth={0.5} strokeDasharray="2 2" />
-                      <line x1={p2.sx} y1={p2.sy} x2={p2.sx} y2={p1.sy} stroke="#06b6d4" strokeWidth={0.5} strokeDasharray="2 2" />
-                      <text x={(p1.sx + p2.sx) / 2} y={Math.min(p1.sy, p2.sy) - 6} fill="#eab308" fontSize={13} textAnchor="middle" fontWeight="bold">
-                        {timeDiff.toFixed(2)}s | {bpm} BPM
-                      </text>
-                      <text x={Math.max(p1.sx, p2.sx) + 8} y={(p1.sy + p2.sy) / 2} fill="#06b6d4" fontSize={13} textAnchor="start" dominantBaseline="middle" fontWeight="bold">
-                        {ampDiff.toFixed(2)}mV
-                      </text>
+                      {(dir === 'h' || dir === 'both') && (
+                        <>
+                          <line x1={p1.sx} y1={p1.sy} x2={p2.sx} y2={p1.sy} stroke="#eab308" strokeWidth={1} />
+                          <text x={midX} y={topY - 8} fill="#eab308" fontSize={dir === 'h' ? 14 : 10} textAnchor="middle" fontWeight="bold">
+                            {dir === 'h' ? `${bpm} BPM` : `${timeDiff.toFixed(2)}s`}
+                          </text>
+                        </>
+                      )}
+                      {(dir === 'v' || dir === 'both') && (
+                        <>
+                          <line x1={p2.sx} y1={p2.sy} x2={p2.sx} y2={p1.sy} stroke="#06b6d4" strokeWidth={1} />
+                          <text x={rightX + 8} y={midY} fill="#06b6d4" fontSize={dir === 'v' ? 14 : 10} textAnchor="start" dominantBaseline="middle" fontWeight="bold">
+                            {ampDiff.toFixed(2)} mV
+                          </text>
+                        </>
+                      )}
                     </>
                   );
                 })()}
